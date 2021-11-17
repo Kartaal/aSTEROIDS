@@ -21,7 +21,7 @@ GameObject *Component::getGameObject() {
     return gameObject;
 }
 
-bool Component::onKey(SDL_Event &event) {
+bool Component::keyEvent(SDL_Event &event) {
     return false;
 }
 

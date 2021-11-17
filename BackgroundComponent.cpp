@@ -8,7 +8,7 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/transform.hpp>
 #include "BackgroundComponent.hpp"
-#include "BirdGame.hpp"
+#include "AsteroidsGame.hpp"
 
 using namespace sre;
 using namespace glm;
@@ -28,7 +28,7 @@ void BackgroundComponent::init(std::string filename) {
 
     auto atlas = SpriteAtlas::createSingleSprite(tex,"background", vec2(0,0));
     auto sprite = atlas->get("background");
-    float scale = BirdGame::windowSize.y / tex->getHeight();
+    float scale = AsteroidsGame::windowSize.y / tex->getHeight();
     sprite.setScale({scale,scale});
     auto batchBuilder = SpriteBatch::create();
     for (int i=0;i<100;i++){
