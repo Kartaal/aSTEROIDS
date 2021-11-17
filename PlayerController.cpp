@@ -12,12 +12,24 @@
 #include "SpriteComponent.hpp"
 
 PlayerController::PlayerController(GameObject *gameObject) : Component(gameObject) {
-    // initiate bird physics
-    gameObject->getComponent<PhysicsComponent>()->setLinearVelocity(glm::vec2(1,0));
-
+    //gameObject->getComponent<PhysicsComponent>()->setLinearVelocity(glm::vec2(1,0));
 }
 
 bool PlayerController::keyEvent(SDL_Event &event) {
+
+    if (keyEvent.key.keysym.sym == SDLK_UP){
+        thrust = keyEvent.type == SDL_KEYDOWN;
+    }
+    if (keyEvent.key.keysym.sym == SDLK_LEFT){
+        rotateCCW = keyEvent.type == SDL_KEYDOWN;
+    }
+    if (keyEvent.key.keysym.sym == SDLK_RIGHT){
+        rotateCW = keyEvent.type == SDL_KEYDOWN;
+    }
+    if (keyEvent.key.keysym.sym == SDLK_SPACE){
+        Shoot();
+    }
+    /*
     if (event.type == SDL_KEYDOWN){
 //        std::cout << "some key pressed" << std::endl;
 
@@ -31,21 +43,21 @@ bool PlayerController::keyEvent(SDL_Event &event) {
             spacePressed = false;
         }
     }
+     */
     return false;
 }
 
 void PlayerController::onCollisionStart(PhysicsComponent *comp) {
     auto collidedWithName = comp->getGameObject()->name;
     //std::cout << "bird collided with "<< collidedWithName << std::endl;
-
+    /* //Example code, do not use
     if (collidedWithName == "Wall bottom" || collidedWithName == "Wall top")
         AsteroidsGame::instance->setGameState(GameState::GameOver);
 
     if (collidedWithName == "Coin"){
         auto coin = comp->getGameObject();
         AsteroidsGame::instance->removeObject(coin);
-
-    }
+    } */
 }
 
 void PlayerController::onCollisionEnd(PhysicsComponent *comp) {
