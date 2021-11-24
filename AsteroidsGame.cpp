@@ -3,6 +3,7 @@
 #include "AsteroidsGame.hpp"
 #include "GameObject.hpp"
 #include "SpriteComponent.hpp"
+#include "PlayerController.hpp"
 #include "SpriteAnimationComponent.hpp"
 #include "Box2D/Dynamics/Contacts/b2Contact.h"
 #include "PhysicsComponent.hpp"
@@ -55,10 +56,19 @@ void AsteroidsGame::init(){
     physicsComponentLookup.clear();
     initPhysics();
 
+    auto physicsScale = 100.0f;
     spriteAtlas = SpriteAtlas::create("asteroids.json","asteroids.png");
     score = 0;
-    auto spaceshipSprite = spriteAtlas->get("playerShip1_blue.png");
     auto spaceship = createGameObject();
+    auto spaceshipSprite = spriteAtlas->get("playerShip1_blue.png");
+    auto spriteObject = spaceship->addComponent<SpriteComponent>();
+    spriteObject->setSprite(spaceshipSprite);
+
+    spaceship->setPosition(windowSize*0.5f);
+    auto spaceshipPhys = spaceship->addComponent<PhysicsComponent>();
+    spaceshipPhys->initCircle(b2_dynamicBody,spaceshipSprite.getSpriteSize().y/2/physicsScale,{spaceship->getPosition().x/physicsScale,spaceship->getPosition().y/physicsScale},1);
+    auto controller = spaceship->addComponent<PlayerController>();
+
     //TODO: Add components to spaceship here
     /*for (size_t i = 0; i < 5; i++)
     {

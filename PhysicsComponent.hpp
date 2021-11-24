@@ -15,16 +15,22 @@ public:
 
     void addForce(glm::vec2 force);     // Force gradually affects the velocity over time
 
-    void addImpulse(glm::vec2 impulse);   // Instantly affects velocity
+    void addImpulse(glm::vec2 impulse);   // Instantly affects velocity;
 
     void setLinearVelocity(glm::vec2 velocity);
-
     glm::vec2 getLinearVelocity();
 
+    void setRotation(float rotationRad);
+    float getRotation();
+
+    float getDensity();
     bool isSensor();
 
+    void setDrag(bool enabled);
     void setSensor(bool enabled);
 private:
+    float density;
+    bool hasDrag = false;
     b2PolygonShape * polygon = nullptr;
     b2CircleShape * circle = nullptr;
     b2Body * body = nullptr;
@@ -34,6 +40,7 @@ private:
     std::vector<PhysicsComponent *> collidingBodies;
     b2World * world = nullptr;
     friend class AsteroidsGame;
+
 
 
 };

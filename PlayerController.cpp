@@ -1,9 +1,10 @@
 //
 // Created by Morten Nobel-Jørgensen on 19/10/2017.
 //
-
+#define GLM_ENABLE_EXPERIMENTAL
 #include <SDL_events.h>
 #include <iostream>
+#include <glm/gtx/rotate_vector.hpp>
 #include "PlayerController.hpp"
 #include "GameObject.hpp"
 #include "SpriteComponent.hpp"
@@ -12,38 +13,40 @@
 #include "SpriteComponent.hpp"
 
 PlayerController::PlayerController(GameObject *gameObject) : Component(gameObject) {
-    //gameObject->getComponent<PhysicsComponent>()->setLinearVelocity(glm::vec2(1,0));
+    physicsComp = gameObject->getComponent<PhysicsComponent>();
+
 }
 
-bool PlayerController::keyEvent(SDL_Event &event) {
+bool PlayerController::keyEvent(SDL_Event &keyEvent) {
 
-    if (keyEvent.key.keysym.sym == SDLK_UP){
-        thrust = keyEvent.type == SDL_KEYDOWN;
+    if (keyEvent.type == SDL_KEYDOWN){
+        if (keyEvent.key.keysym.sym == SDLK_UP){
+            thrusting = true;
+        }
+        if (keyEvent.key.keysym.sym == SDLK_LEFT){
+            rotateCCW = true;
+        }
+        if (keyEvent.key.keysym.sym == SDLK_RIGHT){
+            rotateCW = true;
+        }
+        if (keyEvent.key.keysym.sym == SDLK_SPACE){
+        //    shooting = true;
+        }
+    } else if (keyEvent.type == SDL_KEYUP){
+        if (keyEvent.key.keysym.sym == SDLK_UP){
+            thrusting = false;
+        }
+        if (keyEvent.key.keysym.sym == SDLK_LEFT){
+            rotateCCW = false;
+        }
+        if (keyEvent.key.keysym.sym == SDLK_RIGHT){
+            rotateCW = false;
+        }
+        if (keyEvent.key.keysym.sym == SDLK_SPACE){
+        //    shooting = false;
+        }
     }
-    if (keyEvent.key.keysym.sym == SDLK_LEFT){
-        rotateCCW = keyEvent.type == SDL_KEYDOWN;
-    }
-    if (keyEvent.key.keysym.sym == SDLK_RIGHT){
-        rotateCW = keyEvent.type == SDL_KEYDOWN;
-    }
-    if (keyEvent.key.keysym.sym == SDLK_SPACE){
-        Shoot();
-    }
-    /*
-    if (event.type == SDL_KEYDOWN){
-//        std::cout << "some key pressed" << std::endl;
 
-        if(event.key.keysym.sym == SDLK_SPACE && !spacePressed){
-            gameObject->getComponent<PhysicsComponent>()->addImpulse(glm::vec2(0,0.15));
-            spacePressed = true;
-        }
-    } else if (event.type == SDL_KEYUP){
-  //      std::cout << "some key released" << std::endl;
-        if(event.key.keysym.sym == SDLK_SPACE && spacePressed){
-            spacePressed = false;
-        }
-    }
-     */
     return false;
 }
 
@@ -62,6 +65,31 @@ void PlayerController::onCollisionStart(PhysicsComponent *comp) {
 
 void PlayerController::onCollisionEnd(PhysicsComponent *comp) {
 
+}
+
+void PlayerController::update(float deltaTime) {
+    //Component::update(deltaTime);
+    auto rotation = physicsComp->getRotation();
+    //auto velocity = physicsComp->getLinearVelocity();
+    auto position = gameObject->getPosition();
+    if (thrusting) {
+        float acceleration = deltaTime * thrustPower;
+        glm::vec2 direction = glm::rotateZ(glm::vec3(0, acceleration, 0), glm::radians(rotation));
+
+        physicsComp->addForce(direction);
+    }
+
+    //Add drag force a la https://imranedu.wordpress.com/2015/01/07/how-to-simulate-realistic-air-friction-in-box2d-starling-version/
+    //auto vel = physicsComp->getLinearVelocity();
+    //auto k = 1e-4 * physicsComp->getDensity() * ;
+
+    if (rotateCCW){
+        rotation += glm::radians( deltaTime * rotationSpeed);
+    }
+    if (rotateCW){
+        rotation -= glm::radians(deltaTime * rotationSpeed);
+    }
+    physicsComp->setRotation(rotation);
 }
 
 

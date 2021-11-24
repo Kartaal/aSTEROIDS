@@ -50,9 +50,27 @@ void PhysicsComponent::setLinearVelocity(glm::vec2 velocity) {
     body->SetLinearVelocity(v);
 }
 
+float PhysicsComponent::getRotation(){
+    return body->GetAngle();
+}
+
+float PhysicsComponent::getDensity(){
+    return  density;
+}
+
+void PhysicsComponent::setDrag(bool enabled){
+    hasDrag = enabled;
+}
+
+void PhysicsComponent::setRotation(float rotationRad) {
+    body->SetAwake(true);
+    body->SetTransform(body->GetPosition(),rotationRad);
+}
+
 void PhysicsComponent::initCircle(b2BodyType type, float radius, glm::vec2 center, float density) {
     assert(body == nullptr);
     // do init
+    this->density = density;
     shapeType = b2Shape::Type::e_circle;
     b2BodyDef bd;
     bd.type = type;
@@ -64,6 +82,7 @@ void PhysicsComponent::initCircle(b2BodyType type, float radius, glm::vec2 cente
     b2FixtureDef fxD;
     fxD.shape = circle;
     fxD.density = density;
+
     fixture = body->CreateFixture(&fxD);
 
     AsteroidsGame::instance->registerPhysicsComponent(this);
