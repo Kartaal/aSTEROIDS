@@ -5,6 +5,7 @@
 #include "sre/SpriteAtlas.hpp"
 #include "Box2D/Dynamics/b2World.h"
 #include "GameObject.hpp"
+#include "ObjectType.hpp"
 //#include "BackgroundComponent.hpp"
 #include "Box2DDebugDraw.hpp"
 #include "Component.hpp"
@@ -21,10 +22,11 @@ class AsteroidsGame : public b2ContactListener{
 public:
     AsteroidsGame();
     static const glm::vec2 windowSize;
-    static const glm::vec2 AsteroidsGame::wrapperSize;
+    static const glm::vec2 wrapperSize;
     //sre::Sprite getSprite(std::string spriteName);
     static std::shared_ptr<AsteroidsGame> instance;
     std::shared_ptr<GameObject> createGameObject();
+    std::shared_ptr<GameObject> SpawnEnemy(ObjectType);
 
     void incrementScore();
     //void GameOver();

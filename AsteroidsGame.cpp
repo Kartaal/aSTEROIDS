@@ -2,6 +2,7 @@
 #include <glm/gtc/constants.hpp>
 #include "AsteroidsGame.hpp"
 #include "GameObject.hpp"
+#include "ObjectType.hpp"
 #include "SpriteComponent.hpp"
 #include "PlayerController.hpp"
 #include "SpriteAnimationComponent.hpp"
@@ -9,7 +10,7 @@
 #include "PhysicsComponent.hpp"
 #include "WeaponComponent.h"
 #include "LifetimeComponent.h"
-
+#include "RandomFloat.h"
 
 
 using namespace sre;
@@ -77,17 +78,13 @@ void AsteroidsGame::init(){
     //auto spaceShipTimer = spaceship->addComponent<LifetimeComponent>();
     //spaceShipTimer->setLifetime(2.0f);
     //TODO: Add components to spaceship here
-    for (size_t i = 0; i < 5; i++) {
-        auto asteroid = createGameObject();
 
-        asteroid->name = "Asteroid";
-        auto asteroidSprite = spriteAtlas->get("meteorBrown_big4.png");
-        auto spriteObject = asteroid->addComponent<SpriteComponent>();
-        spriteObject->setSprite(asteroidSprite);
-        auto pos = glm::vec2 (windowSize.x*0.5f + 50*i,windowSize.y*0.5f);
-        asteroid->setPosition(pos);
-        auto life = asteroid->addComponent<LifetimeComponent>();
-        life->setLifetime(i+1);
+    //TODO: Add components to spaceship here
+    for (size_t i = 0; i < 5; i++)
+    {
+        SpawnEnemy(ObjectType::AsteroidLarge);
+        SpawnEnemy(ObjectType::AsteroidMedium);
+        SpawnEnemy(ObjectType::AsteroidSmall);
     }
 
 }
@@ -202,8 +199,10 @@ void AsteroidsGame::keyEvent(SDL_Event &event) {
                 // press 'd' for physics debug
                 doDebugDraw = !doDebugDraw;
                 if (doDebugDraw){
+                    std::cout << "Enabling debug draw" << std::endl;
                     world->SetDebugDraw(&debugDraw);
                 } else {
+                    std::cout << "Disabling debug draw" << std::endl;
                     world->SetDebugDraw(nullptr);
                 }
                 break;
@@ -224,6 +223,41 @@ void AsteroidsGame::keyEvent(SDL_Event &event) {
 
 void AsteroidsGame::incrementScore() {
     score += 1;
+}
+
+std::shared_ptr<GameObject> AsteroidsGame::SpawnEnemy(ObjectType objectType){
+    auto enemy = createGameObject();
+    auto spriteComp = enemy->addComponent<SpriteComponent>();
+    auto physicsComponent = enemy->addComponent<PhysicsComponent>();
+    enemy->setPosition(glm::vec2{RandomFloat::generateRandomFloat(windowSize.x),
+                                 RandomFloat::generateRandomFloat(windowSize.y)});
+    enemy->name=std::to_string(objectType);
+    std::string spriteName;
+    glm::vec2 force = glm::vec2{RandomFloat::generateRandomFloat(1), RandomFloat::generateRandomFloat(1)};
+    float radius;
+    switch (objectType) {
+        case AsteroidLarge:
+            spriteName = "meteorBrown_big4.png";
+            radius = 42;
+            break;
+        case AsteroidMedium:
+            spriteName = "meteorBrown_med1.png";
+            radius = 20;
+            break;
+        case AsteroidSmall:
+            spriteName = "meteorBrown_tiny1.png";
+            radius = 10;
+            break;
+        default:
+            std::cout << "EnemyType: " << objectType << " Not covered in SpawnEnemy" << std::endl;
+    }
+
+    auto sprite = spriteAtlas->get(spriteName);
+    physicsComponent->initCircle(b2_dynamicBody, radius / physicsScale, glm::vec2{enemy->position.x / physicsScale, enemy->position.y / physicsScale}, 1);
+    physicsComponent->addForce(force);
+    spriteComp->setSprite(sprite);
+    return enemy;
+    //TODO: Add components that
 }
 
 std::shared_ptr<GameObject> AsteroidsGame::createGameObject() {
