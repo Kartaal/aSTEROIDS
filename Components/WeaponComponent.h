@@ -17,4 +17,6 @@ private:
 
     bool shooting = false;
     float timeSinceLastShot = 0;
+
+    void shoot();
 };

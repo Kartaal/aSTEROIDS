@@ -27,6 +27,8 @@ public:
     static std::shared_ptr<AsteroidsGame> instance;
     std::shared_ptr<GameObject> createGameObject();
     std::shared_ptr<GameObject> SpawnEnemy(ObjectType);
+    std::shared_ptr<GameObject> SpawnProjectile(GameObject* shooter, float projectileSize,
+        float projectileSpeed, float projectileLifetime);
 
     void incrementScore();
     //void GameOver();

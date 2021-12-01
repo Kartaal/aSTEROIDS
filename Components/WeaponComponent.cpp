@@ -1,6 +1,8 @@
 #include "WeaponComponent.h"
 #include <SDL_events.h>
 #include "AsteroidsGame.hpp"
+#include "LifetimeComponent.h"
+#include "SpriteComponent.hpp"
 
 WeaponComponent::WeaponComponent(GameObject *gameObject) : Component(gameObject) {
     shipPhysicsComp = gameObject->getComponent<PhysicsComponent>();
@@ -9,9 +11,13 @@ WeaponComponent::WeaponComponent(GameObject *gameObject) : Component(gameObject)
 void WeaponComponent::update(float deltaTime) {
     if(shooting && timeSinceLastShot >= 1.0f/fireRate){
         timeSinceLastShot = 0;
-        std::cout << "Pew pew look at me go" << std::endl;
+        shoot();
     }
     timeSinceLastShot += deltaTime;
+}
+
+void WeaponComponent::shoot(){
+    AsteroidsGame::instance->SpawnProjectile(gameObject,projectileSize,projectileSpeed,projectileLifetime);
 }
 
 bool WeaponComponent::keyEvent(SDL_Event &event) {

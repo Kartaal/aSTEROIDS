@@ -43,7 +43,7 @@ bool PlayerController::keyEvent(SDL_Event &keyEvent) {
 }
 
 void PlayerController::onCollisionStart(PhysicsComponent *comp) {
-    auto collidedWithName = comp->getGameObject()->name;
+    //auto collidedWithName = comp->getGameObject()->name;
     //std::cout << "bird collided with "<< collidedWithName << std::endl;
     /* //Example code, do not use
     if (collidedWithName == "Wall bottom" || collidedWithName == "Wall top")

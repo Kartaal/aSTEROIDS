@@ -1,5 +1,7 @@
 ﻿#include <ctime>
 #include <glm/gtc/constants.hpp>
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/rotate_vector.hpp>
 #include "AsteroidsGame.hpp"
 #include "GameObject.hpp"
 #include "ObjectType.hpp"
@@ -277,6 +279,33 @@ std::shared_ptr<GameObject> AsteroidsGame::SpawnEnemy(ObjectType objectType){
     physicsComponent->addForce(force * direction);
     return enemy;
     //TODO: Add components that affect the enemy
+}
+
+#define PROJECTILE_SIZE 5.0f
+#define PROJECTILE_SPEED 1
+std::shared_ptr<GameObject> AsteroidsGame::SpawnProjectile(GameObject* shooter, float projectileSize,float projectileSpeed,float projectileLifetime){
+    auto projectile = createGameObject();
+    projectile->setRotation(shooter->rotation);
+    projectile->setPosition(shooter->position);
+
+
+    auto lifetimeComponent = projectile->addComponent<LifetimeComponent>();
+    lifetimeComponent->setLifetime(projectileLifetime);
+
+
+
+    auto projectileSprite = spriteAtlas->get("laserBlue01.png");
+    projectileSprite.setScale(projectileSprite.getScale()*PROJECTILE_SIZE*projectileSize);
+    auto spriteComp = projectile->addComponent<SpriteComponent>();
+    spriteComp->setSprite(projectileSprite);
+    auto physics = projectile->addComponent<PhysicsComponent>();
+    physics->initCircle(b2_dynamicBody,projectileSprite.getScale().x/physicsScale,projectile->position/physicsScale,1);
+
+    glm::vec2 direction = glm::rotateZ(glm::vec3(0, PROJECTILE_SPEED*projectileSpeed, 0), glm::radians(projectile->rotation));
+    physics->addForce(direction);
+    physics->setRotation(glm::radians(projectile->rotation));
+    physics->setSensor(true);
+    return projectile;
 }
 
 std::shared_ptr<GameObject> AsteroidsGame::createGameObject() {
