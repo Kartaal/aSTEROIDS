@@ -3,7 +3,7 @@
 #include "AsteroidsGame.hpp"
 
 WeaponComponent::WeaponComponent(GameObject *gameObject) : Component(gameObject) {
-
+    shipPhysicsComp = gameObject->getComponent<PhysicsComponent>();
 }
 
 void WeaponComponent::update(float deltaTime) {

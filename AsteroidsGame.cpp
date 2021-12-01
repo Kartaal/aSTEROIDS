@@ -8,6 +8,7 @@
 #include "Box2D/Dynamics/Contacts/b2Contact.h"
 #include "PhysicsComponent.hpp"
 #include "WeaponComponent.h"
+#include "LifetimeComponent.h"
 
 
 
@@ -73,6 +74,7 @@ void AsteroidsGame::init(){
     auto controller = spaceship->addComponent<PlayerController>();
 
     auto spaceShipWeapon = spaceship->addComponent<WeaponComponent>();
+
     //TODO: Add components to spaceship here
     /*for (size_t i = 0; i < 5; i++)
     {
