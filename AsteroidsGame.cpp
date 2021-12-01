@@ -115,7 +115,6 @@ void AsteroidsGame::update(float deltaTime) {
             int index = found - sceneObjects.begin();
             sceneObjects[index] = sceneObjects.back();
             sceneObjects.pop_back();
-            //sceneObjects.erase(found);
         }
         toRemove.clear();
     }
@@ -140,16 +139,16 @@ void AsteroidsGame::updatePhysics() {
         //Screen wrapping based on the object's radius to ensure it's out of screen when teleporting
         auto rad = phys.second->circle->m_radius;
         if(position.x <= -rad){
-            position.x += wrapperSize.x+rad*2;
+            position.x = wrapperSize.x+rad;
         }
         else if(position.x >= wrapperSize.x+rad){
-            position.x -= wrapperSize.x+rad*2;
+            position.x = -rad;
         }
         if(position.y <= -rad){
-            position.y += wrapperSize.y+rad*2;
+            position.y = wrapperSize.y+rad;
         }
         else if(position.y >= wrapperSize.y+rad){
-            position.y -= wrapperSize.y+rad*2;
+            position.y = -rad;
         }
         phys.second->body->SetTransform(b2Vec2(position.x,position.y),angle);
 
