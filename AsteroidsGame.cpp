@@ -74,13 +74,21 @@ void AsteroidsGame::init(){
     auto controller = spaceship->addComponent<PlayerController>();
 
     auto spaceShipWeapon = spaceship->addComponent<WeaponComponent>();
-
+    //auto spaceShipTimer = spaceship->addComponent<LifetimeComponent>();
+    //spaceShipTimer->setLifetime(2.0f);
     //TODO: Add components to spaceship here
-    /*for (size_t i = 0; i < 5; i++)
-    {
+    for (size_t i = 0; i < 5; i++) {
         auto asteroid = createGameObject();
-        //TODO: Add components to asteroids
-    }*/
+
+        asteroid->name = "Asteroid";
+        auto asteroidSprite = spriteAtlas->get("meteorBrown_big4.png");
+        auto spriteObject = asteroid->addComponent<SpriteComponent>();
+        spriteObject->setSprite(asteroidSprite);
+        auto pos = glm::vec2 (windowSize.x*0.5f + 50*i,windowSize.y*0.5f);
+        asteroid->setPosition(pos);
+        auto life = asteroid->addComponent<LifetimeComponent>();
+        life->setLifetime(i+1);
+    }
 
 }
 
@@ -104,7 +112,10 @@ void AsteroidsGame::update(float deltaTime) {
         for(auto o: toRemove){
             auto found = std::find_if(sceneObjects.begin(), sceneObjects.end(), [&](std::shared_ptr<GameObject> obj){return obj.get() == o;});
             // if (found != sceneObjects.end())
-            sceneObjects.erase(found);
+            int index = found - sceneObjects.begin();
+            sceneObjects[index] = sceneObjects.back();
+            sceneObjects.pop_back();
+            //sceneObjects.erase(found);
         }
         toRemove.clear();
     }
