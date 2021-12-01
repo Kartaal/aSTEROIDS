@@ -20,8 +20,12 @@ file(GLOB aSTEREOIDS
         )
 
 # Compile cpp files (from aSTEREOIDS variable)
-add_executable(aSTEREOIDS_game ${aSTEREOIDS})
+add_executable(aSTEREOIDS_game ${aSTEREOIDS} Components/WeaponComponent.cpp Components/WeaponComponent.h)
 target_link_libraries(aSTEREOIDS_game ${all_libs})
+target_include_directories(aSTEREOIDS_game PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}/Components
+        )
 
 # copy files to dest
 file(COPY asteroids.json asteroids.png DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Debug)

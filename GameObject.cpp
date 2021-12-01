@@ -22,6 +22,10 @@ const glm::vec2 &GameObject::getPosition() const {
     return position;
 }
 
+int GameObject::getSize() const {
+    return size;
+}
+
 void GameObject::setPosition(const glm::vec2 &position) {
     GameObject::position = position;
 }

@@ -21,6 +21,7 @@ class AsteroidsGame : public b2ContactListener{
 public:
     AsteroidsGame();
     static const glm::vec2 windowSize;
+    static const glm::vec2 AsteroidsGame::wrapperSize;
     //sre::Sprite getSprite(std::string spriteName);
     static std::shared_ptr<AsteroidsGame> instance;
     std::shared_ptr<GameObject> createGameObject();
@@ -56,13 +57,13 @@ private:
 
     void updatePhysics();
     b2World * world = nullptr;
-    const float physicsScale = 100;
+    static const float physicsScale;
     void registerPhysicsComponent(PhysicsComponent *r);
     void deregisterPhysicsComponent(PhysicsComponent *r);
     std::map<b2Fixture*,PhysicsComponent *> physicsComponentLookup;
     Box2DDebugDraw debugDraw;
     bool doDebugDraw = false;
-    GameState gameState = GameState::Ready;
+    GameState gameState = GameState::Running;
     friend class PhysicsComponent;
     std::vector<GameObject*> toRemove;
 };

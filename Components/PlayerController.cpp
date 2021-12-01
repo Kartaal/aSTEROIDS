@@ -7,10 +7,8 @@
 #include <glm/gtx/rotate_vector.hpp>
 #include "PlayerController.hpp"
 #include "GameObject.hpp"
-#include "SpriteComponent.hpp"
 #include "PhysicsComponent.hpp"
 #include "AsteroidsGame.hpp"
-#include "SpriteComponent.hpp"
 
 PlayerController::PlayerController(GameObject *gameObject) : Component(gameObject) {
     physicsComp = gameObject->getComponent<PhysicsComponent>();
@@ -29,9 +27,6 @@ bool PlayerController::keyEvent(SDL_Event &keyEvent) {
         if (keyEvent.key.keysym.sym == SDLK_RIGHT){
             rotateCW = true;
         }
-        if (keyEvent.key.keysym.sym == SDLK_SPACE){
-        //    shooting = true;
-        }
     } else if (keyEvent.type == SDL_KEYUP){
         if (keyEvent.key.keysym.sym == SDLK_UP){
             thrusting = false;
@@ -41,9 +36,6 @@ bool PlayerController::keyEvent(SDL_Event &keyEvent) {
         }
         if (keyEvent.key.keysym.sym == SDLK_RIGHT){
             rotateCW = false;
-        }
-        if (keyEvent.key.keysym.sym == SDLK_SPACE){
-        //    shooting = false;
         }
     }
 
@@ -68,20 +60,15 @@ void PlayerController::onCollisionEnd(PhysicsComponent *comp) {
 }
 
 void PlayerController::update(float deltaTime) {
-    //Component::update(deltaTime);
     auto rotation = physicsComp->getRotation();
-    //auto velocity = physicsComp->getLinearVelocity();
     auto position = gameObject->getPosition();
+
     if (thrusting) {
         float acceleration = deltaTime * thrustPower;
         glm::vec2 direction = glm::rotateZ(glm::vec3(0, acceleration, 0), glm::radians(rotation));
 
         physicsComp->addForce(direction);
     }
-
-    //Add drag force a la https://imranedu.wordpress.com/2015/01/07/how-to-simulate-realistic-air-friction-in-box2d-starling-version/
-    //auto vel = physicsComp->getLinearVelocity();
-    //auto k = 1e-4 * physicsComp->getDensity() * ;
 
     if (rotateCCW){
         rotation += glm::radians( deltaTime * rotationSpeed);

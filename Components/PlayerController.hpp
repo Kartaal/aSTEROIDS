@@ -15,7 +15,7 @@ public:
     void onCollisionEnd(PhysicsComponent *comp) override;
 private:
     std::shared_ptr<PhysicsComponent> physicsComp;
-    //bool shooting;
+
     bool rotateCW = false;
     bool rotateCCW = false;
     bool thrusting = false;
@@ -25,6 +25,5 @@ private:
     float maxSpeed;
     float rotationSpeed = 10000;
 
-    //float fireRate;
 
 };

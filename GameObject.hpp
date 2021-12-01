@@ -30,6 +30,8 @@ public:
 
     float getRotation() const;
 
+    int getSize() const;
+
     void setRotation(float rotation);
 
     const std::vector<std::shared_ptr<Component>>& getComponents();
@@ -41,6 +43,7 @@ private:
 
     glm::vec2 position;
     float rotation;
+    int size;
 
     friend class AsteroidsGame;
 };

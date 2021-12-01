@@ -7,12 +7,15 @@
 #include "SpriteAnimationComponent.hpp"
 #include "Box2D/Dynamics/Contacts/b2Contact.h"
 #include "PhysicsComponent.hpp"
+#include "WeaponComponent.h"
 
 
 
 using namespace sre;
 
+const float AsteroidsGame::physicsScale = 100;
 const glm::vec2 AsteroidsGame::windowSize(1600,800);
+const glm::vec2 AsteroidsGame::wrapperSize = windowSize/physicsScale;
 std::shared_ptr<AsteroidsGame> AsteroidsGame::instance = nullptr;
 
 AsteroidsGame::AsteroidsGame()
@@ -56,10 +59,10 @@ void AsteroidsGame::init(){
     physicsComponentLookup.clear();
     initPhysics();
 
-    auto physicsScale = 100.0f;
     spriteAtlas = SpriteAtlas::create("asteroids.json","asteroids.png");
     score = 0;
     auto spaceship = createGameObject();
+    spaceship->name = "Spaceship";
     auto spaceshipSprite = spriteAtlas->get("playerShip1_blue.png");
     auto spriteObject = spaceship->addComponent<SpriteComponent>();
     spriteObject->setSprite(spaceshipSprite);
@@ -69,6 +72,7 @@ void AsteroidsGame::init(){
     spaceshipPhys->initCircle(b2_dynamicBody,spaceshipSprite.getSpriteSize().y/2/physicsScale,{spaceship->getPosition().x/physicsScale,spaceship->getPosition().y/physicsScale},1);
     auto controller = spaceship->addComponent<PlayerController>();
 
+    auto spaceShipWeapon = spaceship->addComponent<WeaponComponent>();
     //TODO: Add components to spaceship here
     /*for (size_t i = 0; i < 5; i++)
     {
@@ -118,7 +122,26 @@ void AsteroidsGame::updatePhysics() {
         auto position = phys.second->body->GetPosition();
         float angle = phys.second->body->GetAngle();
         auto gameObject = phys.second->getGameObject();
-        gameObject->setPosition(glm::vec2(position.x*physicsScale, position.y*physicsScale));
+
+
+        //Screen wrapping based on the object's radius to ensure it's out of screen when teleporting
+        auto rad = phys.second->circle->m_radius;
+        if(position.x <= -rad){
+            position.x += wrapperSize.x+rad*2;
+        }
+        else if(position.x >= wrapperSize.x+rad){
+            position.x -= wrapperSize.x+rad*2;
+        }
+        if(position.y <= -rad){
+            position.y += wrapperSize.y+rad*2;
+        }
+        else if(position.y >= wrapperSize.y+rad){
+            position.y -= wrapperSize.y+rad*2;
+        }
+        phys.second->body->SetTransform(b2Vec2(position.x,position.y),angle);
+
+
+        gameObject->setPosition(glm::vec2(position.x, position.y)*physicsScale);
         gameObject->setRotation(angle);
     }
 }
