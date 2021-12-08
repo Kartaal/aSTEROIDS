@@ -281,8 +281,9 @@ std::shared_ptr<GameObject> AsteroidsGame::SpawnEnemy(ObjectType objectType){
     //TODO: Add components that affect the enemy
 }
 
-#define PROJECTILE_SIZE 5.0f
-#define PROJECTILE_SPEED 1
+#define PROJECTILE_SIZE 1.0f
+#define PROJECTILE_SPEED 2.5f
+#define PROJECTILE_LIFETIME 5.0f //Seconds
 std::shared_ptr<GameObject> AsteroidsGame::SpawnProjectile(GameObject* shooter, float projectileSize,float projectileSpeed,float projectileLifetime){
     auto projectile = createGameObject();
     projectile->setRotation(shooter->rotation);
@@ -290,7 +291,7 @@ std::shared_ptr<GameObject> AsteroidsGame::SpawnProjectile(GameObject* shooter, 
 
 
     auto lifetimeComponent = projectile->addComponent<LifetimeComponent>();
-    lifetimeComponent->setLifetime(projectileLifetime);
+    lifetimeComponent->setLifetime(PROJECTILE_LIFETIME * projectileLifetime);
 
 
 
@@ -298,9 +299,10 @@ std::shared_ptr<GameObject> AsteroidsGame::SpawnProjectile(GameObject* shooter, 
     projectileSprite.setScale(projectileSprite.getScale()*PROJECTILE_SIZE*projectileSize);
     auto spriteComp = projectile->addComponent<SpriteComponent>();
     spriteComp->setSprite(projectileSprite);
+
     auto physics = projectile->addComponent<PhysicsComponent>();
     //physics->initBox(b2_kinematicBody,glm::vec2(projectileSprite.getSpriteSize().x/physicsScale,projectileSprite.getSpriteSize().y/physicsScale),projectile->position/physicsScale,1);;
-    physics->initCircle(b2_dynamicBody,projectileSprite.getSpriteSize().x*2/physicsScale,projectile->getPosition()/physicsScale,1);
+    physics->initCircle(b2_dynamicBody,projectileSprite.getSpriteSize().x*projectileSprite.getScale().x/2/physicsScale,projectile->getPosition()/physicsScale,1);
     glm::vec2 direction = glm::rotateZ(glm::vec3(0, PROJECTILE_SPEED*projectileSpeed, 0), glm::radians(projectile->rotation));
     physics->setLinearVelocity(direction);
     physics->setRotation(shooter->rotation);
