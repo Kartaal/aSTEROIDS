@@ -10,7 +10,7 @@
 #include "PhysicsComponent.hpp"
 #include "WeaponComponent.h"
 #include "LifetimeComponent.h"
-#include "RandomFloat.h"
+#include "Randomness.h"
 
 
 using namespace sre;
@@ -229,35 +229,54 @@ std::shared_ptr<GameObject> AsteroidsGame::SpawnEnemy(ObjectType objectType){
     auto enemy = createGameObject();
     auto spriteComp = enemy->addComponent<SpriteComponent>();
     auto physicsComponent = enemy->addComponent<PhysicsComponent>();
-    enemy->setPosition(glm::vec2{RandomFloat::generateRandomFloat(windowSize.x),
-                                 RandomFloat::generateRandomFloat(windowSize.y)});
     enemy->name=std::to_string(objectType);
+
     std::string spriteName;
-    glm::vec2 force = glm::vec2{RandomFloat::generateRandomFloat(1), RandomFloat::generateRandomFloat(1)};
     float radius;
+    float density;
+    glm::vec2 force;
+
     switch (objectType) {
         case AsteroidLarge:
             spriteName = "meteorBrown_big4.png";
             radius = 42;
+            density = 10;
+            force = glm::vec2{Randomness::generateRandomFloat(50, 30),
+                                        Randomness::generateRandomFloat(50, 30)};
             break;
         case AsteroidMedium:
             spriteName = "meteorBrown_med1.png";
             radius = 20;
+            density = 5;
+            force = glm::vec2{Randomness::generateRandomFloat(30, 10),
+                              Randomness::generateRandomFloat(30, 10)};
             break;
         case AsteroidSmall:
             spriteName = "meteorBrown_tiny1.png";
             radius = 10;
+            density = 3;
+            force = glm::vec2{Randomness::generateRandomFloat(2),
+                              Randomness::generateRandomFloat(2)};
             break;
         default:
             std::cout << "EnemyType: " << objectType << " Not covered in SpawnEnemy" << std::endl;
     }
+    enemy->setPosition(Randomness::generateEnemySpawnPoint(radius));
 
     auto sprite = spriteAtlas->get(spriteName);
-    physicsComponent->initCircle(b2_dynamicBody, radius / physicsScale, glm::vec2{enemy->position.x / physicsScale, enemy->position.y / physicsScale}, 1);
-    physicsComponent->addForce(force);
     spriteComp->setSprite(sprite);
+
+    physicsComponent->initCircle(b2_dynamicBody,
+                                 radius / physicsScale,
+                                 glm::vec2{
+                                            enemy->position.x / physicsScale,
+                                            enemy->position.y / physicsScale
+                                           },
+                                           density);
+    auto direction = Randomness::generateSpawnDirection(enemy->position);
+    physicsComponent->addForce(force * direction);
     return enemy;
-    //TODO: Add components that
+    //TODO: Add components that affect the enemy
 }
 
 std::shared_ptr<GameObject> AsteroidsGame::createGameObject() {
