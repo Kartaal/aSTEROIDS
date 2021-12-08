@@ -2,6 +2,8 @@
 #include <glm/gtc/constants.hpp>
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/rotate_vector.hpp>
+#include <EnemyController.hpp>
+#include <BulletController.hpp>
 #include "AsteroidsGame.hpp"
 #include "GameObject.hpp"
 #include "ObjectType.hpp"
@@ -66,7 +68,7 @@ void AsteroidsGame::init(){
     spriteAtlas = SpriteAtlas::create("asteroids.json","asteroids.png");
     score = 0;
     auto spaceship = createGameObject();
-    spaceship->name = "Spaceship";
+    spaceship->objectType = PlayerShip;
     auto spaceshipSprite = spriteAtlas->get("playerShip1_blue.png");
     auto spriteObject = spaceship->addComponent<SpriteComponent>();
     spriteObject->setSprite(spaceshipSprite);
@@ -109,6 +111,9 @@ void AsteroidsGame::update(float deltaTime) {
     spawnTimer -= deltaTime;
 
     updatePhysics();
+    for (auto pair: toCreate){
+        SpawnEnemy(pair.first, pair.second);
+    }
     for(auto o: toRemove){
         auto found = std::find_if(sceneObjects.begin(), sceneObjects.end(), [&](std::shared_ptr<GameObject> obj){return obj.get() == o;});
         // if (found != sceneObjects.end())
@@ -117,7 +122,8 @@ void AsteroidsGame::update(float deltaTime) {
         sceneObjects.pop_back();
     }
     toRemove.clear();
-    
+    toCreate.clear();
+
     for (int i=0;i<sceneObjects.size();i++){
         sceneObjects[i]->update(deltaTime);
     }
@@ -234,11 +240,12 @@ void AsteroidsGame::incrementScore() {
     score += 1;
 }
 
-std::shared_ptr<GameObject> AsteroidsGame::SpawnEnemy(ObjectType objectType){
+std::shared_ptr<GameObject> AsteroidsGame::SpawnEnemy(ObjectType objectType, glm::vec2 position){
     auto enemy = createGameObject();
     auto spriteComp = enemy->addComponent<SpriteComponent>();
     auto physicsComponent = enemy->addComponent<PhysicsComponent>();
-    enemy->name=std::to_string(objectType);
+    auto controller = enemy->addComponent<EnemyController>();
+    enemy->objectType=objectType;
 
     std::string spriteName;
     float radius;
@@ -270,8 +277,12 @@ std::shared_ptr<GameObject> AsteroidsGame::SpawnEnemy(ObjectType objectType){
         default:
             std::cout << "EnemyType: " << objectType << " Not covered in SpawnEnemy" << std::endl;
     }
-    enemy->setPosition(Randomness::generateEnemySpawnPoint(radius));
 
+    std::cout << position.x << "  y: " << position.y << std::endl;
+    if (position.x == 0 && position.y == 0){ //The default position, i.e. no position was given to the method
+        position = Randomness::generateEnemySpawnPoint(radius);
+    }
+    enemy->setPosition(position);
     auto sprite = spriteAtlas->get(spriteName);
     spriteComp->setSprite(sprite);
 
@@ -336,8 +347,12 @@ void AsteroidsGame::deregisterPhysicsComponent(PhysicsComponent *r) {
     }
 }
 
-void AsteroidsGame::removeObject(GameObject *object) {
-    toRemove.push_back(object);
+void AsteroidsGame::scheduleForRemoval(GameObject *obj) {
+    toRemove.push_back(obj);
+}
+
+void AsteroidsGame::scheduleForCreation(ObjectType type, glm::vec2 position) {
+    toCreate.push_back(std::pair(type, position));
 }
 
 void AsteroidsGame::BeginContact(b2Contact *contact) {

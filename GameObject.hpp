@@ -2,6 +2,8 @@
 #include <vector>
 #include "glm/glm.hpp"
 #include "sre/SpriteBatch.hpp"
+#include "ObjectType.hpp"
+
 #pragma once
 
 // Forward declaration
@@ -36,7 +38,7 @@ public:
 
     const std::vector<std::shared_ptr<Component>>& getComponents();
 
-    std::string name = "_";
+    ObjectType objectType = Unknown;
 private:
     GameObject() = default;
     std::vector<std::shared_ptr<Component>> components;

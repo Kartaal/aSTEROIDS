@@ -24,9 +24,10 @@ public:
     static const glm::vec2 windowSize;
     static const glm::vec2 wrapperSize;
     //sre::Sprite getSprite(std::string spriteName);
+    std::shared_ptr<sre::SpriteAtlas> spriteAtlas;
     static std::shared_ptr<AsteroidsGame> instance;
     std::shared_ptr<GameObject> createGameObject();
-    std::shared_ptr<GameObject> SpawnEnemy(ObjectType);
+    std::shared_ptr<GameObject> SpawnEnemy(ObjectType, glm::vec2 position= glm::vec2{0,0});
     std::shared_ptr<GameObject> SpawnProjectile(GameObject* shooter, float projectileSize,
         float projectileSpeed, float projectileLifetime);
 
@@ -37,7 +38,8 @@ public:
 
     void setGameState(GameState newState);
 
-    void removeObject(GameObject *obj);
+    void scheduleForRemoval(GameObject *obj);
+    void scheduleForCreation(ObjectType type, glm::vec2 position);
 
 private:
     void init();
@@ -49,7 +51,6 @@ private:
     void handleContact(b2Contact *contact, bool begin);
   //  void otherEvent(SDL_Event &event);
     sre::Camera camera;
-    std::shared_ptr<sre::SpriteAtlas> spriteAtlas;
 
     std::vector<std::shared_ptr<GameObject>> sceneObjects;
     //sre::Camera camera;
@@ -70,6 +71,7 @@ private:
     GameState gameState = GameState::Running;
     friend class PhysicsComponent;
     std::vector<GameObject*> toRemove;
+    std::vector<std::pair<ObjectType, glm::vec2>> toCreate;
 
     float spawnTimerReset = 2.0f;
     float spawnTimer = 2.0f;

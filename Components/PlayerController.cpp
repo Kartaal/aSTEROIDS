@@ -9,6 +9,7 @@
 #include "GameObject.hpp"
 #include "PhysicsComponent.hpp"
 #include "AsteroidsGame.hpp"
+#include "SpriteComponent.hpp"
 
 PlayerController::PlayerController(GameObject *gameObject) : Component(gameObject) {
     physicsComp = gameObject->getComponent<PhysicsComponent>();
@@ -43,16 +44,14 @@ bool PlayerController::keyEvent(SDL_Event &keyEvent) {
 }
 
 void PlayerController::onCollisionStart(PhysicsComponent *comp) {
-    //auto collidedWithName = comp->getGameObject()->name;
-    //std::cout << "bird collided with "<< collidedWithName << std::endl;
-    /* //Example code, do not use
-    if (collidedWithName == "Wall bottom" || collidedWithName == "Wall top")
+    auto collidedWithType = comp->getGameObject()->objectType;
+    if (collidedWithType == AsteroidSmall || collidedWithType == AsteroidMedium || collidedWithType == AsteroidLarge){
         AsteroidsGame::instance->setGameState(GameState::GameOver);
+        auto spriteComp = this->getGameObject()->getComponent<SpriteComponent>();
+        auto sprite = AsteroidsGame::instance->spriteAtlas->get("bang.png");
+        spriteComp->setSprite(sprite);
+    }
 
-    if (collidedWithName == "Coin"){
-        auto coin = comp->getGameObject();
-        AsteroidsGame::instance->removeObject(coin);
-    } */
 }
 
 void PlayerController::onCollisionEnd(PhysicsComponent *comp) {

@@ -5,6 +5,6 @@
 #ifndef SIMPLERENDERENGINEPROJECT_OBJECTTYPE_HPP
 #define SIMPLERENDERENGINEPROJECT_OBJECTTYPE_HPP
 
-enum ObjectType {AsteroidLarge, AsteroidMedium, AsteroidSmall, PlayerBullet, PlayerShip};
+enum ObjectType {Unknown, AsteroidLarge, AsteroidMedium, AsteroidSmall, PlayerBullet, PlayerShip};
 
 #endif //SIMPLERENDERENGINEPROJECT_OBJECTTYPE_HPP

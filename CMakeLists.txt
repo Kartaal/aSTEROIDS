@@ -20,7 +20,7 @@ file(GLOB aSTEREOIDS
         )
 
 # Compile cpp files (from aSTEREOIDS variable)
-add_executable(aSTEREOIDS_game ${aSTEREOIDS} ObjectType.hpp)
+add_executable(aSTEREOIDS_game ${aSTEREOIDS} ObjectType.hpp Components/EnemyController.cpp Components/EnemyController.hpp)
 target_link_libraries(aSTEREOIDS_game ${all_libs})
 target_include_directories(aSTEREOIDS_game PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
