@@ -1,4 +1,5 @@
 #include "Component.hpp"
+#include <SDL_mixer.h>
 
 class WeaponComponent: public Component {
 public:
@@ -19,4 +20,6 @@ private:
     float timeSinceLastShot = 0;
 
     void shoot();
+
+    std::shared_ptr<Mix_Chunk> fireSound;
 };

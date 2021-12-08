@@ -14,6 +14,8 @@
 PlayerController::PlayerController(GameObject *gameObject) : Component(gameObject) {
     physicsComp = gameObject->getComponent<PhysicsComponent>();
 
+    deathExplosion = std::shared_ptr<Mix_Chunk>(Mix_LoadWAV("spaceShipExplosion.wav"));
+
 }
 
 bool PlayerController::keyEvent(SDL_Event &keyEvent) {
@@ -45,7 +47,13 @@ bool PlayerController::keyEvent(SDL_Event &keyEvent) {
 
 void PlayerController::onCollisionStart(PhysicsComponent *comp) {
     auto collidedWithType = comp->getGameObject()->objectType;
-    if (collidedWithType == AsteroidSmall || collidedWithType == AsteroidMedium || collidedWithType == AsteroidLarge){
+
+    if (collidedWithType == AsteroidSmall || collidedWithType == AsteroidMedium || collidedWithType == AsteroidLarge) {
+
+        // Play spaceship explosion sound
+        Mix_PlayChannel(-1, deathExplosion.get(), 0);
+
+        // Change game state and update sprite to bang
         AsteroidsGame::instance->setGameState(GameState::GameOver);
         auto spriteComp = this->getGameObject()->getComponent<SpriteComponent>();
         auto sprite = AsteroidsGame::instance->spriteAtlas->get("bang.png");
@@ -77,5 +85,3 @@ void PlayerController::update(float deltaTime) {
     }
     physicsComp->setRotation(rotation);
 }
-
-

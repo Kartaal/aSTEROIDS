@@ -15,6 +15,7 @@
 #include "WeaponComponent.h"
 #include "LifetimeComponent.h"
 #include "Randomness.h"
+#include <SDL_mixer.h>
 
 
 using namespace sre;
@@ -59,6 +60,9 @@ void AsteroidsGame::init(){
     if (world != nullptr){ // deregister call backlistener to avoid getting callbacks when recreating the world
         world->SetContactListener(nullptr);
     }
+
+    // Audio setup
+    Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
 
     toRemove.clear();
     sceneObjects.clear();

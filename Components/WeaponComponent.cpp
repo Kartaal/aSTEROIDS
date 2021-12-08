@@ -6,6 +6,8 @@
 
 WeaponComponent::WeaponComponent(GameObject *gameObject) : Component(gameObject) {
     shipPhysicsComp = gameObject->getComponent<PhysicsComponent>();
+
+    fireSound = std::shared_ptr<Mix_Chunk>(Mix_LoadWAV("laserShoot.wav"));
 }
 
 void WeaponComponent::update(float deltaTime) {
@@ -18,6 +20,8 @@ void WeaponComponent::update(float deltaTime) {
 
 void WeaponComponent::shoot(){
     AsteroidsGame::instance->SpawnProjectile(gameObject,projectileSize,projectileSpeed,projectileLifetime);
+    Mix_PlayChannel(-1, fireSound.get(), 0);
+
 }
 
 bool WeaponComponent::keyEvent(SDL_Event &event) {
