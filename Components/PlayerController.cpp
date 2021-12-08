@@ -14,7 +14,7 @@
 PlayerController::PlayerController(GameObject *gameObject) : Component(gameObject) {
     physicsComp = gameObject->getComponent<PhysicsComponent>();
 
-    deathExplosion = std::shared_ptr<Mix_Chunk>(Mix_LoadWAV("spaceShipExplosion.wav"));
+    deathExplosion = std::shared_ptr<Mix_Chunk>(Mix_LoadWAV("Sounds/spaceShipExplosion.wav"));
 
 }
 

@@ -7,7 +7,7 @@
 WeaponComponent::WeaponComponent(GameObject *gameObject) : Component(gameObject) {
     shipPhysicsComp = gameObject->getComponent<PhysicsComponent>();
 
-    fireSound = std::shared_ptr<Mix_Chunk>(Mix_LoadWAV("laserShoot.wav"));
+    fireSound = std::shared_ptr<Mix_Chunk>(Mix_LoadWAV("Sounds/laserShoot.wav"));
 }
 
 void WeaponComponent::update(float deltaTime) {
