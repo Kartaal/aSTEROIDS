@@ -299,11 +299,11 @@ std::shared_ptr<GameObject> AsteroidsGame::SpawnProjectile(GameObject* shooter, 
     auto spriteComp = projectile->addComponent<SpriteComponent>();
     spriteComp->setSprite(projectileSprite);
     auto physics = projectile->addComponent<PhysicsComponent>();
-    physics->initCircle(b2_dynamicBody,projectileSprite.getScale().x/physicsScale,projectile->position/physicsScale,1);
-
+    //physics->initBox(b2_kinematicBody,glm::vec2(projectileSprite.getSpriteSize().x/physicsScale,projectileSprite.getSpriteSize().y/physicsScale),projectile->position/physicsScale,1);;
+    physics->initCircle(b2_dynamicBody,projectileSprite.getSpriteSize().x*2/physicsScale,projectile->getPosition()/physicsScale,1);
     glm::vec2 direction = glm::rotateZ(glm::vec3(0, PROJECTILE_SPEED*projectileSpeed, 0), glm::radians(projectile->rotation));
-    physics->addForce(direction);
-    physics->setRotation(glm::radians(projectile->rotation));
+    physics->setLinearVelocity(direction);
+    physics->setRotation(shooter->rotation);
     physics->setSensor(true);
     return projectile;
 }
