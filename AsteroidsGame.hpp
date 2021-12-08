@@ -70,6 +70,9 @@ private:
     GameState gameState = GameState::Running;
     friend class PhysicsComponent;
     std::vector<GameObject*> toRemove;
+
+    float spawnTimerReset = 2.0f;
+    float spawnTimer = 2.0f;
 };
 
 

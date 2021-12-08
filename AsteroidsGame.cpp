@@ -106,19 +106,26 @@ void AsteroidsGame::update(float deltaTime) {
     if (gameState != GameState::Running)
         return;
 
-    if (gameState == GameState::Running){
-        updatePhysics();
-        for(auto o: toRemove){
-            auto found = std::find_if(sceneObjects.begin(), sceneObjects.end(), [&](std::shared_ptr<GameObject> obj){return obj.get() == o;});
-            // if (found != sceneObjects.end())
-            int index = found - sceneObjects.begin();
-            sceneObjects[index] = sceneObjects.back();
-            sceneObjects.pop_back();
-        }
-        toRemove.clear();
+    spawnTimer -= deltaTime;
+
+    updatePhysics();
+    for(auto o: toRemove){
+        auto found = std::find_if(sceneObjects.begin(), sceneObjects.end(), [&](std::shared_ptr<GameObject> obj){return obj.get() == o;});
+        // if (found != sceneObjects.end())
+        int index = found - sceneObjects.begin();
+        sceneObjects[index] = sceneObjects.back();
+        sceneObjects.pop_back();
     }
+    toRemove.clear();
+    
     for (int i=0;i<sceneObjects.size();i++){
         sceneObjects[i]->update(deltaTime);
+    }
+
+    if (spawnTimer <= 0.0f)
+    {
+        SpawnEnemy(ObjectType::AsteroidLarge);
+        spawnTimer = spawnTimerReset;
     }
 }
 
