@@ -278,7 +278,7 @@ std::shared_ptr<GameObject> AsteroidsGame::SpawnEnemy(ObjectType objectType, glm
             std::cout << "EnemyType: " << objectType << " Not covered in SpawnEnemy" << std::endl;
     }
 
-    std::cout << position.x << "  y: " << position.y << std::endl;
+    //std::cout << position.x << "  y: " << position.y << std::endl;
     if (position.x == 0 && position.y == 0){ //The default position, i.e. no position was given to the method
         position = Randomness::generateEnemySpawnPoint(radius);
     }
@@ -352,7 +352,7 @@ void AsteroidsGame::scheduleForRemoval(GameObject *obj) {
 }
 
 void AsteroidsGame::scheduleForCreation(ObjectType type, glm::vec2 position) {
-    toCreate.push_back(std::pair(type, position));
+    toCreate.push_back(std::pair<ObjectType, glm::vec2>(type, position));
 }
 
 void AsteroidsGame::BeginContact(b2Contact *contact) {

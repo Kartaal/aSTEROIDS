@@ -9,7 +9,7 @@ LifetimeComponent::LifetimeComponent(GameObject *gameObject) : Component(gameObj
 void LifetimeComponent::update(float deltaTime) {
     timeToDeath -= deltaTime;
     if (timeToDeath <= 0){
-        AsteroidsGame::instance->removeObject(gameObject);
+        AsteroidsGame::instance->scheduleForRemoval(gameObject);
     }
 }
 
