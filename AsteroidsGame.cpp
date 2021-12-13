@@ -110,20 +110,24 @@ void AsteroidsGame::update(float deltaTime) {
 
     spawnTimer -= deltaTime;
 
-    updatePhysics();
-    for (auto pair: toCreate){
-        SpawnEnemy(pair.first, pair.second);
+    if (gameState == GameState::Running){
+        updatePhysics();
+        for (auto pair: toCreate){
+            SpawnEnemy(pair.first, pair.second);
+        }
+        for(auto o: toRemove){
+            auto found = std::find_if(sceneObjects.begin(), sceneObjects.end(), [&](std::shared_ptr<GameObject> obj){return obj.get() == o;});
+            if (found != sceneObjects.end()){
+                std::cout << "This happend" << std::endl;
+                int size = sceneObjects.size();
+                int index = found - sceneObjects.begin();
+                sceneObjects[index] = sceneObjects.back();
+            }
+            sceneObjects.pop_back();
+        }
+        toRemove.clear();
+        toCreate.clear();
     }
-    for(auto o: toRemove){
-        auto found = std::find_if(sceneObjects.begin(), sceneObjects.end(), [&](std::shared_ptr<GameObject> obj){return obj.get() == o;});
-        // if (found != sceneObjects.end())
-        int index = found - sceneObjects.begin();
-        sceneObjects[index] = sceneObjects.back();
-        sceneObjects.pop_back();
-    }
-    toRemove.clear();
-    toCreate.clear();
-
     for (int i=0;i<sceneObjects.size();i++){
         sceneObjects[i]->update(deltaTime);
     }
@@ -306,6 +310,8 @@ std::shared_ptr<GameObject> AsteroidsGame::SpawnProjectile(GameObject* shooter, 
     auto projectile = createGameObject();
     projectile->setRotation(shooter->rotation);
     projectile->setPosition(shooter->position);
+    projectile->objectType = PlayerBullet;
+    projectile->addComponent<BulletController>();
 
 
     auto lifetimeComponent = projectile->addComponent<LifetimeComponent>();
