@@ -356,7 +356,7 @@ void AsteroidsGame::scheduleForRemoval(GameObject *obj) {
 }
 
 void AsteroidsGame::scheduleForCreation(ObjectType type, glm::vec2 position) {
-    toCreate.push_back(std::pair<ObjectType, glm::vec2>(type, position));
+    toCreate.emplace_back(type, position);
 }
 
 void AsteroidsGame::BeginContact(b2Contact *contact) {
