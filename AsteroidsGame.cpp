@@ -118,8 +118,6 @@ void AsteroidsGame::update(float deltaTime) {
         for(auto o: toRemove){
             auto found = std::find_if(sceneObjects.begin(), sceneObjects.end(), [&](std::shared_ptr<GameObject> obj){return obj.get() == o;});
             if (found != sceneObjects.end()){
-                std::cout << "This happend" << std::endl;
-                int size = sceneObjects.size();
                 int index = found - sceneObjects.begin();
                 sceneObjects[index] = sceneObjects.back();
             }
