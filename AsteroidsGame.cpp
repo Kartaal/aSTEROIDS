@@ -263,21 +263,21 @@ std::shared_ptr<GameObject> AsteroidsGame::SpawnEnemy(ObjectType objectType, glm
 	case AsteroidLarge:
 		spriteName = "meteorBrown_big4.png";
 		radius = 42;
-		density = 10;
+		density = 7;
 		force = glm::vec2{ Randomness::generateRandomFloat(50, 30),
 									Randomness::generateRandomFloat(50, 30) };
 		break;
 	case AsteroidMedium:
 		spriteName = "meteorBrown_med1.png";
 		radius = 20;
-		density = 5;
+		density = 7;
 		force = glm::vec2{ Randomness::generateRandomFloat(30, 10),
 						  Randomness::generateRandomFloat(30, 10) };
 		break;
 	case AsteroidSmall:
 		spriteName = "meteorBrown_tiny1.png";
 		radius = 10;
-		density = 3;
+		density = 7;
 		force = glm::vec2{ Randomness::generateRandomFloat(2),
 						  Randomness::generateRandomFloat(2) };
 		break;
