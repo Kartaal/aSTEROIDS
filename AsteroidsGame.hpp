@@ -45,8 +45,6 @@ public:
     void scheduleForRemoval(GameObject *obj);
     void scheduleForCreation(ObjectType type, glm::vec2 position);
 
-    void playSound(int soundIndex);
-
 private:
     void init();
     void initPhysics();
