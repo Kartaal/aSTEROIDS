@@ -10,6 +10,7 @@
 #include "Box2DDebugDraw.hpp"
 #include "Component.hpp"
 #include "PhysicsComponent.hpp"
+#include <SDL_mixer.h>
 
 class GameObject;
 class PhysicsComponent;
@@ -40,6 +41,8 @@ public:
 
     void scheduleForRemoval(GameObject *obj);
     void scheduleForCreation(ObjectType type, glm::vec2 position);
+
+    void playSound(int soundIndex);
 
 private:
     void init();
@@ -75,6 +78,11 @@ private:
 
     float spawnTimerReset = 2.0f;
     float spawnTimer = 2.0f;
+
+    // Sound references
+    std::shared_ptr<Mix_Chunk> asteroidExplosionSound;
+    std::shared_ptr<Mix_Chunk> deathExplosion;
+    std::shared_ptr<Mix_Chunk> fireSound;
 };
 
 
