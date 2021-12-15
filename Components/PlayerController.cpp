@@ -50,7 +50,7 @@ void PlayerController::onCollisionStart(PhysicsComponent* comp) {
 	if (collidedWithType == AsteroidSmall || collidedWithType == AsteroidMedium || collidedWithType == AsteroidLarge) {
 
 		// Play spaceship explosion sound
-		AsteroidsGame::instance->playSound(2);
+		AsteroidsGame::instance->playSound(SpaceshipExplosion);
 
 		// Change game state and update sprite to bang
 		AsteroidsGame::instance->setGameState(GameState::GameOver);

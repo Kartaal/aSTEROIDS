@@ -10,6 +10,7 @@
 #include "Box2DDebugDraw.hpp"
 #include "Component.hpp"
 #include "PhysicsComponent.hpp"
+#include "SoundEnum.hpp"
 #include <SDL_mixer.h>
 
 class GameObject;
@@ -31,6 +32,8 @@ public:
     std::shared_ptr<GameObject> SpawnEnemy(ObjectType, glm::vec2 position= glm::vec2{0,0});
     std::shared_ptr<GameObject> SpawnProjectile(GameObject* shooter, float projectileSize,
         float projectileSpeed, float projectileLifetime);
+    void playSound(SoundEnum sound);
+
 
     void incrementScore();
     //void GameOver();
@@ -47,6 +50,7 @@ public:
 private:
     void init();
     void initPhysics();
+    void setupSounds();
 
     void update(float deltaTime);
     void render();
@@ -80,9 +84,7 @@ private:
     float spawnTimer = 2.0f;
 
     // Sound references
-    std::shared_ptr<Mix_Chunk> asteroidExplosionSound;
-    std::shared_ptr<Mix_Chunk> deathExplosion;
-    std::shared_ptr<Mix_Chunk> fireSound;
+    std::map<SoundEnum, std::shared_ptr<Mix_Chunk>> soundMap = std::map<SoundEnum, std::shared_ptr<Mix_Chunk>>();
 };
 
 

@@ -18,7 +18,7 @@ void WeaponComponent::update(float deltaTime) {
 
 void WeaponComponent::shoot() {
 	AsteroidsGame::instance->SpawnProjectile(gameObject, projectileSize, projectileSpeed, projectileLifetime);
-	AsteroidsGame::instance->playSound(0);
+	AsteroidsGame::instance->playSound(Shooting);
 
 }
 

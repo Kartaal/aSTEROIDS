@@ -23,7 +23,7 @@ void EnemyController::onCollisionStart(PhysicsComponent* comp) {
 	}
 
 	// Play asteroid explosion sound
-	AsteroidsGame::instance->playSound(1);
+	AsteroidsGame::instance->playSound(AsteroidExplosion);
 
 	// Schedule this object for removal
 	AsteroidsGame::instance->scheduleForRemoval(gameObject);

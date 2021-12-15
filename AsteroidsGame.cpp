@@ -36,7 +36,8 @@ AsteroidsGame::AsteroidsGame()
 	time_t t;
 	// random seed based on time
 	srand((unsigned)time(&t));
-	init();
+    setupSounds();
+    init();
 
 	camera.setWindowCoordinates();
 
@@ -61,11 +62,6 @@ void AsteroidsGame::init() {
 		world->SetContactListener(nullptr);
 	}
 
-	// Audio setup
-	Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
-	asteroidExplosionSound = std::shared_ptr<Mix_Chunk>(Mix_LoadWAV("Sounds/explosion.wav"));
-	fireSound = std::shared_ptr<Mix_Chunk>(Mix_LoadWAV("Sounds/laserShoot.wav"));
-	deathExplosion = std::shared_ptr<Mix_Chunk>(Mix_LoadWAV("Sounds/spaceShipExplosion.wav"));
 
 	toRemove.clear();
 	sceneObjects.clear();
@@ -410,22 +406,19 @@ void AsteroidsGame::setGameState(GameState newState) {
 	this->gameState = newState;
 }
 
-void AsteroidsGame::playSound(int soundIndex)
+void AsteroidsGame::setupSounds(){
+    // Audio setup
+    Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
+
+    soundMap.emplace(AsteroidExplosion, std::shared_ptr<Mix_Chunk>(Mix_LoadWAV("Sounds/explosion.wav")));
+    soundMap.emplace(Shooting, std::shared_ptr<Mix_Chunk>(Mix_LoadWAV("Sounds/laserShoot.wav")));
+    soundMap.emplace(SpaceshipExplosion, std::shared_ptr<Mix_Chunk>(Mix_LoadWAV("Sounds/spaceShipExplosion.wav")));
+}
+
+void AsteroidsGame::playSound(SoundEnum sound)
 {
-	switch (soundIndex)
-	{
-	case 0:
-		Mix_PlayChannel(-1, fireSound.get(), 0);
-		break;
-	case 1:
-		Mix_PlayChannel(-1, asteroidExplosionSound.get(), 0);
-		break;
-	case 2:
-		Mix_PlayChannel(-1, deathExplosion.get(), 0);
-		break;
-	default:
-		break;
-	}
+    auto chunk = soundMap.find(sound)->second;
+    Mix_PlayChannel(-1, chunk.get(), 0);
 }
 
 int main() {
