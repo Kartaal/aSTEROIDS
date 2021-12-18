@@ -1,6 +1,3 @@
-//
-// Created by Morten Nobel-Jørgensen on 19/10/2017.
-//
 #define GLM_ENABLE_EXPERIMENTAL
 #include <SDL_events.h>
 #include <iostream>
@@ -83,4 +80,16 @@ void PlayerController::update(float deltaTime) {
 		rotation -= glm::radians(deltaTime * rotationSpeed);
 	}
 	physicsComp->setRotation(rotation);
+}
+
+void PlayerController::guiWeaponInfo() {
+
+}
+
+void PlayerController::guiHealth() {
+
+}
+
+void PlayerController::onGui() {
+
 }

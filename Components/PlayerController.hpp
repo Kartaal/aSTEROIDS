@@ -13,7 +13,12 @@ public:
 	void onCollisionStart(PhysicsComponent* comp) override;
 
 	void onCollisionEnd(PhysicsComponent* comp) override;
+
+    void onGui() override;
 private:
+    void guiWeaponInfo();
+    void guiHealth();
+
 	std::shared_ptr<PhysicsComponent> physicsComp;
 
 	bool rotateCW = false;
