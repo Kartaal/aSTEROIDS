@@ -3,6 +3,7 @@
 #include "AsteroidsGame.hpp"
 #include "LifetimeComponent.h"
 #include "SpriteComponent.hpp"
+#include <UpgradeType.hpp>
 
 WeaponComponent::WeaponComponent(GameObject* gameObject) : Component(gameObject) {
 	shipPhysicsComp = gameObject->getComponent<PhysicsComponent>();
@@ -35,4 +36,26 @@ bool WeaponComponent::keyEvent(SDL_Event& event) {
 	}
 
 	return false;
+}
+
+void WeaponComponent::applyUpgrade(UpgradeType type, float uValue)
+{
+	switch (type)
+	{
+	case FireRate:
+		fireRate += uValue;
+		break;
+	case ProjectileSize:
+		projectileSize += uValue;
+		break;
+	case ProjectileSpeed:
+		projectileSpeed += uValue;
+		break;
+	case ProjectileLifetime:
+		projectileLifetime += uValue;
+		break;
+	default:
+		std::cout << "Upgrade type: " << type << " not covered in applyUpgrade" << std::endl;
+		break;
+	}
 }

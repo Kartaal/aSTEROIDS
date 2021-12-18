@@ -7,6 +7,8 @@ public:
 
 	bool keyEvent(SDL_Event& event) override;
 
+	void applyUpgrade(UpgradeType, float);
+
 private:
 	std::shared_ptr<PhysicsComponent> shipPhysicsComp;
 	//Upgradable values
