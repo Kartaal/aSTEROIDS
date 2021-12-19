@@ -350,15 +350,16 @@ std::shared_ptr<GameObject> AsteroidsGame::SpawnProjectile(GameObject* shooter, 
 std::shared_ptr<GameObject> AsteroidsGame::SpawnUpgrade()
 {
 	auto upgrade = createGameObject();
+	upgrade->setPosition(windowSize * 0.5f);
 	upgrade->objectType = Upgrade;
 	upgrade->addComponent<UpgradeController>();
 
-	auto upgradeSprite = spriteAtlas->get("powerupGreen_shield.png");
+	auto upgradeSprite = spriteAtlas->get("powerupYellow_star.png");
 	auto spriteComp = upgrade->addComponent<SpriteComponent>();
 	spriteComp->setSprite(upgradeSprite);
 
 	auto physics = upgrade->addComponent<PhysicsComponent>();
-	physics->initCircle(b2_staticBody, upgradeSprite.getSpriteSize().x / physicsScale, { windowSize.x / 2 / physicsScale, windowSize.y / 2 / physicsScale }, 1);
+	physics->initCircle(b2_staticBody, upgradeSprite.getSpriteSize().x / 2 / physicsScale, { windowSize.x / 2 / physicsScale, windowSize.y / 2 / physicsScale }, 1);
 	physics->setSensor(true);
 
 	return upgrade;
