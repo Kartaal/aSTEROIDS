@@ -16,7 +16,7 @@
 #include "LifetimeComponent.h"
 #include "Randomness.h"
 #include <SDL_mixer.h>
-#include "UpgradeController.cpp"
+#include "UpgradeController.hpp"
 
 
 using namespace sre;
