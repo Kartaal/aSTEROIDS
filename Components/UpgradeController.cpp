@@ -2,7 +2,7 @@
 #include "GameObject.hpp"
 #include "PhysicsComponent.hpp"
 #include "UpgradeController.hpp"
-#include <WeaponComponent.h>
+#include "WeaponComponent.h"
 #include "Randomness.h"
 
 UpgradeController::UpgradeController(GameObject* gameObject) : Component(gameObject)
