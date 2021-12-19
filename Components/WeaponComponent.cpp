@@ -58,4 +58,9 @@ void WeaponComponent::applyUpgrade(UpgradeType type, float uValue)
 		std::cout << "Upgrade type: " << type << " not covered in applyUpgrade" << std::endl;
 		break;
 	}
+
+	std::cout << "Fire rate: " << fireRate << std::endl;
+	std::cout << "Proj size: " << projectileSize << std::endl;
+	std::cout << "Proj speed: " << projectileSpeed << std::endl;
+	std::cout << "Proj lifetime: " << projectileLifetime << std::endl;
 }
