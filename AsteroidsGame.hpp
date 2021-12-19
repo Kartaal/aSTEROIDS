@@ -83,7 +83,7 @@ private:
     float enemySpawnTimer = 2.0f;
 
     float upgradeSpawnTimerReset = 30.0f;
-    float upgradeSpawnTimer = 30.0f;
+    float upgradeSpawnTimer = 5.0f;
 
     // Sound references
     std::map<SoundEnum, std::shared_ptr<Mix_Chunk>> soundMap = std::map<SoundEnum, std::shared_ptr<Mix_Chunk>>();

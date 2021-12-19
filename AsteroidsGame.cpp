@@ -16,7 +16,7 @@
 #include "LifetimeComponent.h"
 #include "Randomness.h"
 #include <SDL_mixer.h>
-#include <UpgradeController.cpp>
+#include "UpgradeController.cpp"
 
 
 using namespace sre;
@@ -353,7 +353,7 @@ std::shared_ptr<GameObject> AsteroidsGame::SpawnUpgrade()
 	upgrade->objectType = Upgrade;
 	upgrade->addComponent<UpgradeController>();
 
-	auto upgradeSprite = spriteAtlas->get("upgrade");
+	auto upgradeSprite = spriteAtlas->get("powerupGreen_shield.png");
 	auto spriteComp = upgrade->addComponent<SpriteComponent>();
 	spriteComp->setSprite(upgradeSprite);
 

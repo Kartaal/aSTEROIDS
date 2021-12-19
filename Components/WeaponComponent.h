@@ -1,4 +1,8 @@
 #include "Component.hpp"
+#include "UpgradeType.hpp"
+
+//#ifndef SIMPLERENDERENGINEPROJECT_WEAPONCOMPONENT_HPP
+//#define SIMPLERENDERENGINEPROJECT_WEAPONCOMPONENT_HPP
 
 class WeaponComponent : public Component {
 public:
@@ -7,7 +11,7 @@ public:
 
 	bool keyEvent(SDL_Event& event) override;
 
-	void applyUpgrade(UpgradeType, float);
+	void applyUpgrade(UpgradeType type, float uValue);
 
 private:
 	std::shared_ptr<PhysicsComponent> shipPhysicsComp;
@@ -22,3 +26,5 @@ private:
 
 	void shoot();
 };
+
+//#endif //SIMPLERENDERENGINEPROJECT_WEAPONCOMPONENT_HPP
