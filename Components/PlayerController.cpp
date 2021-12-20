@@ -7,10 +7,10 @@
 #include "PhysicsComponent.hpp"
 #include "AsteroidsGame.hpp"
 #include "SpriteComponent.hpp"
+#include <sre/Renderer.hpp>
 
 PlayerController::PlayerController(GameObject* gameObject) : Component(gameObject) {
 	physicsComp = gameObject->getComponent<PhysicsComponent>();
-
 }
 
 bool PlayerController::keyEvent(SDL_Event& keyEvent) {
@@ -80,16 +80,4 @@ void PlayerController::update(float deltaTime) {
 		rotation -= glm::radians(deltaTime * rotationSpeed);
 	}
 	physicsComp->setRotation(rotation);
-}
-
-void PlayerController::guiWeaponInfo() {
-
-}
-
-void PlayerController::guiHealth() {
-
-}
-
-void PlayerController::onGui() {
-
 }

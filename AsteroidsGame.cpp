@@ -13,6 +13,7 @@
 #include "Box2D/Dynamics/Contacts/b2Contact.h"
 #include "PhysicsComponent.hpp"
 #include "WeaponComponent.h"
+#include "GuiController.hpp"
 #include "LifetimeComponent.h"
 #include "Randomness.h"
 #include <SDL_mixer.h>
@@ -82,11 +83,10 @@ void AsteroidsGame::init() {
 	auto controller = spaceship->addComponent<PlayerController>();
 
 	auto spaceShipWeapon = spaceship->addComponent<WeaponComponent>();
-	//auto spaceShipTimer = spaceship->addComponent<LifetimeComponent>();
-	//spaceShipTimer->setLifetime(2.0f);
-	//TODO: Add components to spaceship here
+	auto guiComponent = spaceship->addComponent<GuiController>();
 
-	//TODO: Add components to spaceship here
+
+
 	for (size_t i = 0; i < 5; i++)
 	{
 		SpawnEnemy(ObjectType::AsteroidLarge);
@@ -419,6 +419,10 @@ void AsteroidsGame::playSound(SoundEnum sound)
 {
     auto chunk = soundMap.find(sound)->second;
     Mix_PlayChannel(-1, chunk.get(), 0);
+}
+
+int AsteroidsGame::getScore() {
+    return score;
 }
 
 int main() {

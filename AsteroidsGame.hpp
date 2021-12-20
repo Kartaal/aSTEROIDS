@@ -34,7 +34,7 @@ public:
         float projectileSpeed, float projectileLifetime);
     void playSound(SoundEnum sound);
 
-
+    int getScore();
     void incrementScore();
     //void GameOver();
     void BeginContact(b2Contact *contact) override;
