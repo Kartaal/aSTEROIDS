@@ -1,17 +1,12 @@
 #include "GuiController.hpp"
-#include <sre/Renderer.hpp>
+#include "sre/Renderer.hpp"
+#include "WeaponComponent.h"
+using namespace sre;
 
 GuiController::GuiController(GameObject* gameObject) : Component(gameObject) {
 	playerController = gameObject->getComponent<PlayerController>();
-
-    auto fonts = ImGui::GetIO().Fonts;
-    fonts->AddFontDefault();
-    auto fontName = "Assets/Fastrace.ttf";
-    int fontSize = 20;
-    FastRace =
-            fonts->AddFontFromFileTTF(fontName, fontSize);
-
 }
+
 
 bool GuiController::keyEvent(SDL_Event& keyEvent) {
 
@@ -36,7 +31,7 @@ void GuiController::onGui() {
 void GuiController::guiWeaponInfo() {
     auto r = Renderer::instance;
     auto winsize = r->getWindowSize();
-    ImVec2 size = {180, 107};
+    ImVec2 size = {300, 150};
     ImVec2 pos = {winsize.x - size.x,0};
     auto cond = ImGuiCond_Always;
     ImVec2 pivot = {0,0};
@@ -50,8 +45,9 @@ void GuiController::guiWeaponInfo() {
             ImGuiWindowFlags_NoScrollbar;
     bool* open = nullptr;
     ImGui::Begin("#gameinfo", open, flags);
-    ImGui::PushFont(FastRace);
+    ImGui::PushFont(font);
 
+    auto weaponComponent = gameObject->getComponent<WeaponComponent>();
     // draw Score
     ImGui::PushID(1);
     auto scoreStr = std::to_string(AsteroidsGame::instance->getScore());
@@ -59,8 +55,18 @@ void GuiController::guiWeaponInfo() {
     float width = ImGui::CalcTextSize(scoreStr.c_str()).x;
     float windowWidth = ImGui::GetWindowContentRegionWidth();
     ImGui::SetCursorPosX(windowWidth - width); // align right
-    ImGui::Text(scoreStr.c_str());
+    ImGui::Text("%d", AsteroidsGame::instance->getScore());
+    ImGui::Text("Fire rate");ImGui::SameLine();
+    ImGui::Text("%f",weaponComponent->getFireRate());
+    ImGui::Text("Projectile size");ImGui::SameLine();
+    ImGui::Text("%f",weaponComponent->getProjectileSize());
+    ImGui::Text("Projectile speed");ImGui::SameLine();
+    ImGui::Text("%f",weaponComponent->getProjectileSpeed());
+    ImGui::Text("Projectile lifetime");ImGui::SameLine();
+    ImGui::Text("%f",weaponComponent->getProjectileSize());
+
     ImGui::PopID();
+
     /*
     // Draw powerbar
     ImGui::Text("Power"); ImGui::SameLine();
@@ -90,3 +96,8 @@ void GuiController::guiHealth() {
 void GuiController::setPlayerController(std::shared_ptr<PlayerController> controller) {
     playerController = controller;
 }
+
+void GuiController::setFont(ImFont *font) {
+    this->font = font;
+}
+

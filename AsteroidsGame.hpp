@@ -6,6 +6,7 @@
 #include "Box2D/Dynamics/b2World.h"
 #include "GameObject.hpp"
 #include "ObjectType.hpp"
+#include "GuiController.hpp"
 //#include "BackgroundComponent.hpp"
 #include "Box2DDebugDraw.hpp"
 #include "Component.hpp"
@@ -47,6 +48,7 @@ public:
 
 private:
     void init();
+    void initGui();
     void initPhysics();
     void setupSounds();
 
@@ -77,7 +79,8 @@ private:
     friend class PhysicsComponent;
     std::vector<GameObject*> toRemove;
     std::vector<std::pair<ObjectType, glm::vec2>> toCreate;
-
+    //std::shared_ptr<GuiController> guiController;
+    ImFont* gameFont;
     float spawnTimerReset = 2.0f;
     float spawnTimer = 2.0f;
 

@@ -7,6 +7,10 @@ public:
 
 	bool keyEvent(SDL_Event& event) override;
 
+    float getFireRate();
+    float getProjectileSize();
+    float getProjectileSpeed();
+    float getProjectileLifetime();
 private:
 	std::shared_ptr<PhysicsComponent> shipPhysicsComp;
 	//Upgradable values

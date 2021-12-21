@@ -14,11 +14,12 @@ public:
 	bool keyEvent(SDL_Event& event) override;
 
     void setPlayerController(std::shared_ptr<PlayerController> controller);
+    void setFont(ImFont* font);
 
     void onGui() override;
 private:
     void guiWeaponInfo();
     void guiHealth();
-    ImFont* FastRace;
+    ImFont* font;
 	std::shared_ptr<PlayerController> playerController;
 };

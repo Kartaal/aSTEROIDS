@@ -36,3 +36,19 @@ bool WeaponComponent::keyEvent(SDL_Event& event) {
 
 	return false;
 }
+
+float WeaponComponent::getFireRate() {
+    return fireRate;
+}
+
+float WeaponComponent::getProjectileSize() {
+    return projectileSize;
+}
+
+float WeaponComponent::getProjectileSpeed() {
+    return projectileSpeed;
+}
+
+float WeaponComponent::getProjectileLifetime() {
+    return projectileLifetime;
+}
