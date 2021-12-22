@@ -14,7 +14,7 @@ public:
 
 	void onCollisionEnd(PhysicsComponent* comp) override;
 private:
-	std::shared_ptr<PhysicsComponent> physicsComp;
+    std::shared_ptr<PhysicsComponent> physicsComp;
 
 	bool rotateCW = false;
 	bool rotateCCW = false;

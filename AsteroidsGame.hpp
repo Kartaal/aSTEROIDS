@@ -6,6 +6,7 @@
 #include "Box2D/Dynamics/b2World.h"
 #include "GameObject.hpp"
 #include "ObjectType.hpp"
+#include "GuiController.hpp"
 //#include "BackgroundComponent.hpp"
 #include "Box2DDebugDraw.hpp"
 #include "Component.hpp"
@@ -35,7 +36,7 @@ public:
     std::shared_ptr<GameObject> SpawnUpgrade();
     void playSound(SoundEnum sound);
 
-
+    int getScore();
     void incrementScore();
     //void GameOver();
     void BeginContact(b2Contact *contact) override;
@@ -48,6 +49,7 @@ public:
 
 private:
     void init();
+    void initGui();
     void initPhysics();
     void setupSounds();
 
@@ -79,6 +81,7 @@ private:
     std::vector<GameObject*> toRemove;
     std::vector<std::pair<ObjectType, glm::vec2>> toCreate;
 
+    ImFont* gameFont;
     float enemySpawnTimerReset = 2.0f;
     float enemySpawnTimer = 2.0f;
 
@@ -88,5 +91,3 @@ private:
     // Sound references
     std::map<SoundEnum, std::shared_ptr<Mix_Chunk>> soundMap = std::map<SoundEnum, std::shared_ptr<Mix_Chunk>>();
 };
-
-

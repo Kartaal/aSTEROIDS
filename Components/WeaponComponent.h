@@ -11,6 +11,10 @@ public:
 
 	bool keyEvent(SDL_Event& event) override;
 
+    float getFireRate();
+    float getProjectileSize();
+    float getProjectileSpeed();
+    float getProjectileLifetime();
 	void applyUpgrade(UpgradeType type, float uValue);
 
 private:

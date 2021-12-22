@@ -13,6 +13,7 @@
 #include "Box2D/Dynamics/Contacts/b2Contact.h"
 #include "PhysicsComponent.hpp"
 #include "WeaponComponent.h"
+#include "GuiController.hpp"
 #include "LifetimeComponent.h"
 #include "Randomness.h"
 #include <SDL_mixer.h>
@@ -37,8 +38,11 @@ AsteroidsGame::AsteroidsGame()
 	time_t t;
 	// random seed based on time
 	srand((unsigned)time(&t));
-	setupSounds();
-	init();
+    setupSounds();
+
+    initGui();
+    init();
+
 
 	camera.setWindowCoordinates();
 
@@ -83,11 +87,11 @@ void AsteroidsGame::init() {
 	auto controller = spaceship->addComponent<PlayerController>();
 
 	auto spaceShipWeapon = spaceship->addComponent<WeaponComponent>();
-	//auto spaceShipTimer = spaceship->addComponent<LifetimeComponent>();
-	//spaceShipTimer->setLifetime(2.0f);
-	//TODO: Add components to spaceship here
+	auto guiController = spaceship->addComponent<GuiController>();
+    guiController->setFont(gameFont);
 
-	//TODO: Add components to spaceship here
+
+
 	for (size_t i = 0; i < 5; i++)
 	{
 		SpawnEnemy(ObjectType::AsteroidLarge);
@@ -204,6 +208,12 @@ void AsteroidsGame::render() {
 		renderPass.drawLines(debugDraw.getLines());
 		debugDraw.clear();
 	}
+
+    for (auto & go : sceneObjects){
+        for (auto & comp : go->getComponents()){
+            comp->onGui();
+        }
+    }
 
 	/*ImGui::SetNextWindowPos(ImVec2(Renderer::instance->getWindowSize().x/2 - 100, .0f), ImGuiSetCond_Always);
 	ImGui::SetNextWindowSize(ImVec2(200, 70), ImGuiSetCond_Always);
@@ -447,6 +457,18 @@ void AsteroidsGame::playSound(SoundEnum sound)
 {
 	auto chunk = soundMap.find(sound)->second;
 	Mix_PlayChannel(-1, chunk.get(), 0);
+}
+
+int AsteroidsGame::getScore() {
+    return score;
+}
+
+void AsteroidsGame::initGui() {
+    auto fonts = ImGui::GetIO().Fonts;
+    fonts->AddFontDefault();
+    auto fontName = "Assets/Fastrace.ttf";
+    int fontSize = 20;
+    gameFont = fonts->AddFontFromFileTTF(fontName, fontSize);
 }
 
 int main() {

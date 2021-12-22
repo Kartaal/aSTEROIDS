@@ -1,6 +1,3 @@
-//
-// Created by Morten Nobel-Jørgensen on 19/10/2017.
-//
 #define GLM_ENABLE_EXPERIMENTAL
 #include <SDL_events.h>
 #include <iostream>
@@ -10,10 +7,10 @@
 #include "PhysicsComponent.hpp"
 #include "AsteroidsGame.hpp"
 #include "SpriteComponent.hpp"
+#include <sre/Renderer.hpp>
 
 PlayerController::PlayerController(GameObject* gameObject) : Component(gameObject) {
 	physicsComp = gameObject->getComponent<PhysicsComponent>();
-
 }
 
 bool PlayerController::keyEvent(SDL_Event& keyEvent) {
