@@ -63,7 +63,7 @@ void GuiController::guiWeaponInfo() {
     ImGui::Text("Projectile speed");ImGui::SameLine();
     ImGui::Text("%f",weaponComponent->getProjectileSpeed());
     ImGui::Text("Projectile lifetime");ImGui::SameLine();
-    ImGui::Text("%f",weaponComponent->getProjectileSize());
+    ImGui::Text("%f",weaponComponent->getProjectileLifetime());
 
     ImGui::PopID();
 

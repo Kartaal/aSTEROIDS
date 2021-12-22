@@ -39,19 +39,19 @@ bool WeaponComponent::keyEvent(SDL_Event& event) {
 }
 
 float WeaponComponent::getFireRate() {
-    return fireRate;
+	return fireRate;
 }
 
 float WeaponComponent::getProjectileSize() {
-    return projectileSize;
+	return projectileSize;
 }
 
 float WeaponComponent::getProjectileSpeed() {
-    return projectileSpeed;
+	return projectileSpeed;
 }
 
 float WeaponComponent::getProjectileLifetime() {
-    return projectileLifetime;
+	return projectileLifetime;
 }
 
 void WeaponComponent::applyUpgrade(UpgradeType type, float uValue)
