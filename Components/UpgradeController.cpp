@@ -16,16 +16,16 @@ UpgradeController::UpgradeController(GameObject* gameObject) : Component(gameObj
 	switch (type)
 	{
 	case FireRate:
-		value = 0.1f;
+		value = 0.5f;
 		break;
 	case ProjectileSize:
-		value = 0.1f;
+		value = 0.5f;
 		break;
 	case ProjectileSpeed:
-		value = 0.1f;
+		value = 0.5f;
 		break;
 	case ProjectileLifetime:
-		value = 0.5f;
+		value = 1.0f;
 		break;
 	default:
 		std::cout << "Upgrade type: " << type << " not covered in UpgradeController ctor" << std::endl;
