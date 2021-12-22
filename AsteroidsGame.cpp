@@ -17,6 +17,7 @@
 #include "LifetimeComponent.h"
 #include "Randomness.h"
 #include <SDL_mixer.h>
+#include "UpgradeController.hpp"
 
 
 using namespace sre;
@@ -39,8 +40,6 @@ AsteroidsGame::AsteroidsGame()
 	srand((unsigned)time(&t));
     setupSounds();
 
-    //auto guiObject = createGameObject();
-    //guiController = guiObject->addComponent<GuiController>();
     initGui();
     init();
 
@@ -117,7 +116,8 @@ void AsteroidsGame::update(float deltaTime) {
 	if (gameState != GameState::Running)
 		return;
 
-	spawnTimer -= deltaTime;
+	enemySpawnTimer -= deltaTime;
+	upgradeSpawnTimer -= deltaTime;
 
 	if (gameState == GameState::Running) {
 		updatePhysics();
@@ -139,10 +139,18 @@ void AsteroidsGame::update(float deltaTime) {
 		sceneObjects[i]->update(deltaTime);
 	}
 
-	if (spawnTimer <= 0.0f)
+	// Check whether to spawn an enemy, and reset the timer
+	if (enemySpawnTimer <= 0.0f)
 	{
 		SpawnEnemy(ObjectType::AsteroidLarge);
-		spawnTimer = spawnTimerReset;
+		enemySpawnTimer = enemySpawnTimerReset;
+	}
+
+	// Check whether to spawn an upgrade, and reset the timer
+	if (upgradeSpawnTimer <= 0.0f)
+	{
+		SpawnUpgrade();
+		upgradeSpawnTimer = upgradeSpawnTimerReset;
 	}
 }
 
@@ -349,6 +357,24 @@ std::shared_ptr<GameObject> AsteroidsGame::SpawnProjectile(GameObject* shooter, 
 	return projectile;
 }
 
+std::shared_ptr<GameObject> AsteroidsGame::SpawnUpgrade()
+{
+	auto upgrade = createGameObject();
+	upgrade->setPosition(windowSize * 0.5f);
+	upgrade->objectType = Upgrade;
+	upgrade->addComponent<UpgradeController>();
+
+	auto upgradeSprite = spriteAtlas->get("powerupYellow_star.png");
+	auto spriteComp = upgrade->addComponent<SpriteComponent>();
+	spriteComp->setSprite(upgradeSprite);
+
+	auto physics = upgrade->addComponent<PhysicsComponent>();
+	physics->initCircle(b2_staticBody, upgradeSprite.getSpriteSize().x / 2 / physicsScale, { windowSize.x / 2 / physicsScale, windowSize.y / 2 / physicsScale }, 1);
+	physics->setSensor(true);
+
+	return upgrade;
+}
+
 std::shared_ptr<GameObject> AsteroidsGame::createGameObject() {
 	auto obj = std::shared_ptr<GameObject>(new GameObject());
 	sceneObjects.push_back(obj);
@@ -418,19 +444,19 @@ void AsteroidsGame::setGameState(GameState newState) {
 	this->gameState = newState;
 }
 
-void AsteroidsGame::setupSounds(){
-    // Audio setup
-    Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
+void AsteroidsGame::setupSounds() {
+	// Audio setup
+	Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
 
-    soundMap.emplace(AsteroidExplosion, std::shared_ptr<Mix_Chunk>(Mix_LoadWAV("Sounds/explosion.wav")));
-    soundMap.emplace(Shooting, std::shared_ptr<Mix_Chunk>(Mix_LoadWAV("Sounds/laserShoot.wav")));
-    soundMap.emplace(SpaceshipExplosion, std::shared_ptr<Mix_Chunk>(Mix_LoadWAV("Sounds/spaceShipExplosion.wav")));
+	soundMap.emplace(AsteroidExplosion, std::shared_ptr<Mix_Chunk>(Mix_LoadWAV("Sounds/explosion.wav")));
+	soundMap.emplace(Shooting, std::shared_ptr<Mix_Chunk>(Mix_LoadWAV("Sounds/laserShoot.wav")));
+	soundMap.emplace(SpaceshipExplosion, std::shared_ptr<Mix_Chunk>(Mix_LoadWAV("Sounds/spaceShipExplosion.wav")));
 }
 
 void AsteroidsGame::playSound(SoundEnum sound)
 {
-    auto chunk = soundMap.find(sound)->second;
-    Mix_PlayChannel(-1, chunk.get(), 0);
+	auto chunk = soundMap.find(sound)->second;
+	Mix_PlayChannel(-1, chunk.get(), 0);
 }
 
 int AsteroidsGame::getScore() {

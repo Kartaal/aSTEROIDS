@@ -33,6 +33,7 @@ public:
     std::shared_ptr<GameObject> SpawnEnemy(ObjectType, glm::vec2 position= glm::vec2{0,0});
     std::shared_ptr<GameObject> SpawnProjectile(GameObject* shooter, float projectileSize,
         float projectileSpeed, float projectileLifetime);
+    std::shared_ptr<GameObject> SpawnUpgrade();
     void playSound(SoundEnum sound);
 
     int getScore();
@@ -79,13 +80,14 @@ private:
     friend class PhysicsComponent;
     std::vector<GameObject*> toRemove;
     std::vector<std::pair<ObjectType, glm::vec2>> toCreate;
-    //std::shared_ptr<GuiController> guiController;
+
     ImFont* gameFont;
-    float spawnTimerReset = 2.0f;
-    float spawnTimer = 2.0f;
+    float enemySpawnTimerReset = 2.0f;
+    float enemySpawnTimer = 2.0f;
+
+    float upgradeSpawnTimerReset = 30.0f;
+    float upgradeSpawnTimer = 5.0f;
 
     // Sound references
     std::map<SoundEnum, std::shared_ptr<Mix_Chunk>> soundMap = std::map<SoundEnum, std::shared_ptr<Mix_Chunk>>();
 };
-
-

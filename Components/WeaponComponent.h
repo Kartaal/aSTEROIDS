@@ -1,4 +1,8 @@
 #include "Component.hpp"
+#include "UpgradeType.hpp"
+
+//#ifndef SIMPLERENDERENGINEPROJECT_WEAPONCOMPONENT_HPP
+//#define SIMPLERENDERENGINEPROJECT_WEAPONCOMPONENT_HPP
 
 class WeaponComponent : public Component {
 public:
@@ -11,6 +15,8 @@ public:
     float getProjectileSize();
     float getProjectileSpeed();
     float getProjectileLifetime();
+	void applyUpgrade(UpgradeType type, float uValue);
+
 private:
 	std::shared_ptr<PhysicsComponent> shipPhysicsComp;
 	//Upgradable values
@@ -24,3 +30,5 @@ private:
 
 	void shoot();
 };
+
+//#endif //SIMPLERENDERENGINEPROJECT_WEAPONCOMPONENT_HPP
