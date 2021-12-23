@@ -9,10 +9,10 @@
 #include <glm/vec2.hpp>
 
 class Randomness {
-    public:
-        static int generateRandomFloat(int maxOutput, int minOutput = 0);
-        static glm::vec2 generateEnemySpawnPoint(float objectRadius);
-        static glm::vec2 generateSpawnDirection(glm::vec2 spawnPoint);
+public:
+	static int generateRandomFloat(int maxOutput, int minOutput = 0);
+	static glm::vec2 generateEnemySpawnPoint(float objectRadius);
+	static glm::vec2 generateSpawnDirection(glm::vec2 spawnPoint);
 
 };
 

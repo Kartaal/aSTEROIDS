@@ -38,10 +38,10 @@ AsteroidsGame::AsteroidsGame()
 	time_t t;
 	// random seed based on time
 	srand((unsigned)time(&t));
-    setupSounds();
+	setupSounds();
 
-    initGui();
-    init();
+	initGui();
+	init();
 
 
 	camera.setWindowCoordinates();
@@ -88,7 +88,7 @@ void AsteroidsGame::init() {
 
 	auto spaceShipWeapon = spaceship->addComponent<WeaponComponent>();
 	auto guiController = spaceship->addComponent<GuiController>();
-    guiController->setFont(gameFont);
+	guiController->setFont(gameFont);
 
 
 
@@ -209,18 +209,11 @@ void AsteroidsGame::render() {
 		debugDraw.clear();
 	}
 
-    for (auto & go : sceneObjects){
-        for (auto & comp : go->getComponents()){
-            comp->onGui();
-        }
-    }
-
-	/*ImGui::SetNextWindowPos(ImVec2(Renderer::instance->getWindowSize().x/2 - 100, .0f), ImGuiSetCond_Always);
-	ImGui::SetNextWindowSize(ImVec2(200, 70), ImGuiSetCond_Always);
-	ImGui::Begin("", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
-	ImGui::LabelText("GOs", "%i", (int)gameObjects.size());
-	ImGui::LabelText("Score", "%i",score);
-	ImGui::End();*/
+	for (auto& go : sceneObjects) {
+		for (auto& comp : go->getComponents()) {
+			comp->onGui();
+		}
+	}
 }
 
 void AsteroidsGame::keyEvent(SDL_Event& event) {
@@ -460,15 +453,15 @@ void AsteroidsGame::playSound(SoundEnum sound)
 }
 
 int AsteroidsGame::getScore() {
-    return score;
+	return score;
 }
 
 void AsteroidsGame::initGui() {
-    auto fonts = ImGui::GetIO().Fonts;
-    fonts->AddFontDefault();
-    auto fontName = "Assets/Fastrace.ttf";
-    int fontSize = 20;
-    gameFont = fonts->AddFontFromFileTTF(fontName, fontSize);
+	auto fonts = ImGui::GetIO().Fonts;
+	fonts->AddFontDefault();
+	auto fontName = "Assets/Fastrace.ttf";
+	int fontSize = 20;
+	gameFont = fonts->AddFontFromFileTTF(fontName, fontSize);
 }
 
 int main() {

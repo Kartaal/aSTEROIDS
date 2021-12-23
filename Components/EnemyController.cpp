@@ -25,6 +25,9 @@ void EnemyController::onCollisionStart(PhysicsComponent* comp) {
 	// Play asteroid explosion sound
 	AsteroidsGame::instance->playSound(AsteroidExplosion);
 
+	// Increment score
+	AsteroidsGame::instance->incrementScore();
+
 	// Schedule this object for removal
 	AsteroidsGame::instance->scheduleForRemoval(gameObject);
 	auto type = this->gameObject->objectType;

@@ -5,6 +5,10 @@
 #include "sre/Texture.hpp"
 #include "sre/RenderPass.hpp"
 
+/*
+* Currently not implemented component for the background of the game.
+*/
+
 class BackgroundComponent {
 public:
     BackgroundComponent();

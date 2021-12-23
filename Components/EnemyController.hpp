@@ -5,18 +5,28 @@
 #ifndef SIMPLERENDERENGINEPROJECT_ENEMYCONTROLLER_HPP
 #define SIMPLERENDERENGINEPROJECT_ENEMYCONTROLLER_HPP
 
-
 #include "Component.hpp"
 
-class EnemyController  : public Component {
+/*
+* A component controlling the behaviour of enemies (asteroids)
+*/
+
+class EnemyController : public Component {
 public:
-    explicit EnemyController(GameObject *gameObject);
+	explicit EnemyController(GameObject* gameObject);
 
-    void update(float deltaTime) override;
+	void update(float deltaTime) override;
 
-    void onCollisionStart(PhysicsComponent *comp) override;
+	void onCollisionStart(PhysicsComponent* comp) override;		// Handles initial collisions with other objects
+																// If the collided object is not a player projectile,
+																//  return to only do physics calculations.
+																// If colliding with a player projectile,
+																//  play the appropriate sound, 
+																//  increment score,
+																//  mark this object for deletion and
+																//  spawn two smaller asteroids (if this isn't the smallest type)
 
-    void onCollisionEnd(PhysicsComponent *comp) override;
+	void onCollisionEnd(PhysicsComponent* comp) override;
 };
 
 
