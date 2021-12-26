@@ -34,12 +34,12 @@ AsteroidsGame::AsteroidsGame()
 	r.setWindowSize(windowSize);
 	r.init().withSdlInitFlags(SDL_INIT_EVERYTHING)
 		.withSdlWindowFlags(SDL_WINDOW_OPENGL);
-	//Uint32 myEventType = SDL_RegisterEvents(1);
+
 	time_t t;
 	// random seed based on time
 	srand((unsigned)time(&t));
-	setupSounds();
 
+	setupSounds();
 	initGui();
 	init();
 
@@ -58,7 +58,6 @@ AsteroidsGame::AsteroidsGame()
 		render();
 	};
 
-	//restart();
 	r.startEventLoop();
 }
 
@@ -90,8 +89,6 @@ void AsteroidsGame::init() {
 	auto guiController = spaceship->addComponent<GuiController>();
 	guiController->setFont(gameFont);
 
-
-
 	for (size_t i = 0; i < 5; i++)
 	{
 		SpawnEnemy(ObjectType::AsteroidLarge);
@@ -102,7 +99,6 @@ void AsteroidsGame::init() {
 }
 
 void AsteroidsGame::initPhysics() {
-	//float gravity = -9.8; // 9.8 m/s2
 	delete world;
 	world = new b2World(b2Vec2(0, 0));
 	world->SetContactListener(this);
@@ -166,7 +162,6 @@ void AsteroidsGame::updatePhysics() {
 		float angle = phys.second->body->GetAngle();
 		auto gameObject = phys.second->getGameObject();
 
-
 		//Screen wrapping based on the object's radius to ensure it's out of screen when teleporting
 		auto rad = phys.second->circle->m_radius;
 		if (position.x <= -rad) {
@@ -182,7 +177,6 @@ void AsteroidsGame::updatePhysics() {
 			position.y = -rad;
 		}
 		phys.second->body->SetTransform(b2Vec2(position.x, position.y), angle);
-
 
 		gameObject->setPosition(glm::vec2(position.x, position.y) * physicsScale);
 		gameObject->setRotation(angle);
@@ -298,10 +292,10 @@ std::shared_ptr<GameObject> AsteroidsGame::SpawnEnemy(ObjectType objectType, glm
 		std::cout << "EnemyType: " << objectType << " Not covered in SpawnEnemy" << std::endl;
 	}
 
-	//std::cout << position.x << "  y: " << position.y << std::endl;
 	if (position.x == 0 && position.y == 0) { //The default position, i.e. no position was given to the method
 		position = Randomness::generateEnemySpawnPoint(radius);
 	}
+
 	enemy->setPosition(position);
 	auto sprite = spriteAtlas->get(spriteName);
 	spriteComp->setSprite(sprite);
@@ -315,8 +309,8 @@ std::shared_ptr<GameObject> AsteroidsGame::SpawnEnemy(ObjectType objectType, glm
 		density);
 	auto direction = Randomness::generateSpawnDirection(enemy->position);
 	physicsComponent->addForce(force * direction);
+
 	return enemy;
-	//TODO: Add components that affect the enemy
 }
 
 #define PROJECTILE_SIZE 1.0f
@@ -329,11 +323,8 @@ std::shared_ptr<GameObject> AsteroidsGame::SpawnProjectile(GameObject* shooter, 
 	projectile->objectType = PlayerBullet;
 	projectile->addComponent<BulletController>();
 
-
 	auto lifetimeComponent = projectile->addComponent<LifetimeComponent>();
 	lifetimeComponent->setLifetime(PROJECTILE_LIFETIME * projectileLifetime);
-
-
 
 	auto projectileSprite = spriteAtlas->get("laserBlue01.png");
 	projectileSprite.setScale(projectileSprite.getScale() * PROJECTILE_SIZE * projectileSize);
@@ -341,12 +332,12 @@ std::shared_ptr<GameObject> AsteroidsGame::SpawnProjectile(GameObject* shooter, 
 	spriteComp->setSprite(projectileSprite);
 
 	auto physics = projectile->addComponent<PhysicsComponent>();
-	//physics->initBox(b2_kinematicBody,glm::vec2(projectileSprite.getSpriteSize().x/physicsScale,projectileSprite.getSpriteSize().y/physicsScale),projectile->position/physicsScale,1);;
 	physics->initCircle(b2_dynamicBody, projectileSprite.getSpriteSize().x * projectileSprite.getScale().x / 2 / physicsScale, projectile->getPosition() / physicsScale, 1);
 	glm::vec2 direction = glm::rotateZ(glm::vec3(0, PROJECTILE_SPEED * projectileSpeed, 0), glm::radians(projectile->rotation));
 	physics->setLinearVelocity(direction);
 	physics->setRotation(shooter->rotation);
 	physics->setSensor(true);
+
 	return projectile;
 }
 
@@ -371,6 +362,7 @@ std::shared_ptr<GameObject> AsteroidsGame::SpawnUpgrade()
 std::shared_ptr<GameObject> AsteroidsGame::createGameObject() {
 	auto obj = std::shared_ptr<GameObject>(new GameObject());
 	sceneObjects.push_back(obj);
+
 	return obj;
 }
 
@@ -411,6 +403,7 @@ void AsteroidsGame::handleContact(b2Contact* contact, bool begin) {
 	auto fixB = contact->GetFixtureB();
 	auto physA = physicsComponentLookup.find(fixA);
 	auto physB = physicsComponentLookup.find(fixB);
+
 	if (physA != physicsComponentLookup.end() && physB != physicsComponentLookup.end()) {
 		auto& aComponents = physA->second->getGameObject()->getComponents();
 		auto& bComponents = physB->second->getGameObject()->getComponents();
@@ -448,7 +441,7 @@ void AsteroidsGame::setupSounds() {
 
 void AsteroidsGame::playSound(SoundEnum sound)
 {
-	auto chunk = soundMap.find(sound)->second;
+	std::shared_ptr<Mix_Chunk> chunk = soundMap.find(sound)->second;
 	Mix_PlayChannel(-1, chunk.get(), 0);
 }
 

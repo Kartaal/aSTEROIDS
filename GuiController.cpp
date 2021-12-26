@@ -19,6 +19,7 @@ bool GuiController::keyEvent(SDL_Event& keyEvent) {
 
 		}
 	}
+
 	return false;
 }
 
@@ -54,12 +55,16 @@ void GuiController::guiWeaponInfo() {
 	float windowWidth = ImGui::GetWindowContentRegionWidth();
 	ImGui::SetCursorPosX(windowWidth - width); // align right
 	ImGui::Text("%d", AsteroidsGame::instance->getScore());
+
 	ImGui::Text("Fire rate"); ImGui::SameLine();
 	ImGui::Text("%f", weaponComponent->getFireRate());
+
 	ImGui::Text("Projectile size"); ImGui::SameLine();
 	ImGui::Text("%f", weaponComponent->getProjectileSize());
+
 	ImGui::Text("Projectile speed"); ImGui::SameLine();
 	ImGui::Text("%f", weaponComponent->getProjectileSpeed());
+
 	ImGui::Text("Projectile lifetime"); ImGui::SameLine();
 	ImGui::Text("%f", weaponComponent->getProjectileLifetime());
 

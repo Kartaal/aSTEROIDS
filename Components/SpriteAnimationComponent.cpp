@@ -6,30 +6,30 @@
 #include "GameObject.hpp"
 #include <memory>
 
-SpriteAnimationComponent::SpriteAnimationComponent(GameObject *gameObject) : Component(gameObject) {}
+SpriteAnimationComponent::SpriteAnimationComponent(GameObject* gameObject) : Component(gameObject) {}
 
 void SpriteAnimationComponent::update(float deltaTime) {
-    auto spriteComponent = gameObject->getComponent<SpriteComponent>();
+	auto spriteComponent = gameObject->getComponent<SpriteComponent>();
 
-    assert(spriteComponent != nullptr);
+	assert(spriteComponent != nullptr);
 
-    time += deltaTime;
+	time += deltaTime;
 
-    if (time > animationTime){
-        time = fmod(time, animationTime);
-        spriteIndex = (spriteIndex + 1) % sprites.size();
-        spriteComponent->setSprite(sprites[spriteIndex]);
-    }
+	if (time > animationTime) {
+		time = fmod(time, animationTime);
+		spriteIndex = (spriteIndex + 1) % sprites.size();
+		spriteComponent->setSprite(sprites[spriteIndex]);
+	}
 }
 
 void SpriteAnimationComponent::setSprites(std::vector<sre::Sprite> sprites) {
-    this->sprites = sprites;
+	this->sprites = sprites;
 }
 
 float SpriteAnimationComponent::getAnimationTime() const {
-    return animationTime;
+	return animationTime;
 }
 
 void SpriteAnimationComponent::setAnimationTime(float animationTime) {
-    SpriteAnimationComponent::animationTime = animationTime;
+	SpriteAnimationComponent::animationTime = animationTime;
 }

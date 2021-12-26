@@ -4,12 +4,12 @@
 
 #include "Component.hpp"
 
-Component::Component(GameObject *gameObject)
-:gameObject(gameObject)
+Component::Component(GameObject* gameObject)
+	:gameObject(gameObject)
 {
 }
 
-void Component::renderSprite(sre::SpriteBatch::SpriteBatchBuilder &spriteBatchBuilder) {
+void Component::renderSprite(sre::SpriteBatch::SpriteBatchBuilder& spriteBatchBuilder) {
 
 }
 
@@ -17,12 +17,12 @@ void Component::update(float deltaTime) {
 
 }
 
-GameObject *Component::getGameObject() {
-    return gameObject;
+GameObject* Component::getGameObject() {
+	return gameObject;
 }
 
-bool Component::keyEvent(SDL_Event &event) {
-    return false;
+bool Component::keyEvent(SDL_Event& event) {
+	return false;
 }
 
 void Component::onCollisionStart(PhysicsComponent* comp) {
